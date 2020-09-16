@@ -9,6 +9,8 @@ package ticketcounter;
 import java.util.*;
 // DB Imports
 import Connectivity.Link;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.DefaultComboBoxModel;
@@ -45,11 +47,12 @@ public class MainFrame extends javax.swing.JFrame {
     
     public MainFrame() {
         initComponents();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         st=db.Connection();
         AreaCount.setText(String.valueOf(cal.CountArea(st)));
         showDate.setText(func.SetDate());
         SetArea();
-        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -84,7 +87,12 @@ public class MainFrame extends javax.swing.JFrame {
         ThirdFrame = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         AreaList = new javax.swing.JComboBox();
+        jLabel11 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
+        ar = new javax.swing.JLabel();
         FourthFrame = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -98,7 +106,7 @@ public class MainFrame extends javax.swing.JFrame {
         FirstFrameLayout.setHorizontalGroup(
             FirstFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FirstFrameLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(298, Short.MAX_VALUE)
                 .addComponent(Heading, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(226, 226, 226))
         );
@@ -129,11 +137,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel5.setText("Nationality :");
 
         jTextField1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jTextField2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
 
@@ -150,11 +153,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel8.setText("Female Count :");
 
         jTextField3.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
 
         jTextField4.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
 
@@ -211,11 +209,10 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(showDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(TicketCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(SecondFrameLayout.createSequentialGroup()
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                            .addGap(3, 3, 3)))
+                    .addComponent(TicketCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SecondFrameLayout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                        .addGap(3, 3, 3))
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(38, 38, 38)
                 .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,25 +246,45 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel10.setText("Area :");
 
+        AreaList.setModel(model);
+        AreaList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AreaListActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Select Activity :");
+
         javax.swing.GroupLayout ThirdFrameLayout = new javax.swing.GroupLayout(ThirdFrame);
         ThirdFrame.setLayout(ThirdFrameLayout);
         ThirdFrameLayout.setHorizontalGroup(
             ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ThirdFrameLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(AreaList, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(927, Short.MAX_VALUE))
+                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(AreaList, 0, 168, Short.MAX_VALUE)
+                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(74, 74, 74)
+                .addComponent(ar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(709, Short.MAX_VALUE))
         );
         ThirdFrameLayout.setVerticalGroup(
             ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ThirdFrameLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(27, 27, 27)
+                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AreaList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(194, Short.MAX_VALUE))
+                    .addComponent(AreaList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
 
         getContentPane().add(ThirdFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 455, 1234, -1));
@@ -276,7 +293,7 @@ public class MainFrame extends javax.swing.JFrame {
         FourthFrame.setLayout(FourthFrameLayout);
         FourthFrameLayout.setHorizontalGroup(
             FourthFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1234, Short.MAX_VALUE)
         );
         FourthFrameLayout.setVerticalGroup(
             FourthFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,21 +302,32 @@ public class MainFrame extends javax.swing.JFrame {
 
         getContentPane().add(FourthFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 700, 1234, -1));
 
+        jButton1.setText("Add Area");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 840, 170, 30));
+
+        jButton2.setText("Add Activity");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 840, 160, 30));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void AreaListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AreaListActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+        ar.setText(String.valueOf(AreaList.getSelectedItem()));
+    }//GEN-LAST:event_AreaListActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+        this.setVisible(false); //you can't see me!
+        this.dispose(); //Destroy the JFrame object
+        new AddAreaFrame().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -342,8 +370,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel SecondFrame;
     private javax.swing.JPanel ThirdFrame;
     private javax.swing.JLabel TicketCount;
+    private javax.swing.JLabel ar;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

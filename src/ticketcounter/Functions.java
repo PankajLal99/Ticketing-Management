@@ -33,7 +33,7 @@ public class Functions {
         try{
             rs=st.executeQuery(query);
             while(rs.next()){
-                System.out.println(rs.getString("Area"));
+//                System.out.println(rs.getString("Area"));
                 l.add(rs.getString("Area"));
             }
         }

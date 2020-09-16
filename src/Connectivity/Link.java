@@ -28,4 +28,8 @@ public class Link {
             }
     return st;
     }  
+
+    public Statement connection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
