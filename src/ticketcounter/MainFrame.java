@@ -400,149 +400,251 @@ public class MainFrame extends javax.swing.JFrame {
 
         SecondFrame.add(safari_modes, new org.netbeans.lib.awtextra.AbsoluteConstraints(1510, 50, 260, 50));
 
-        getContentPane().add(SecondFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 1790, 280));
-
-        ThirdFrame.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(SecondFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 1820, 280));
 
         touristcount.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         touristcount.setText("0");
-        ThirdFrame.add(touristcount, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, 88, 30));
 
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel10.setText("Total Tourist :");
-        ThirdFrame.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 88, 30));
 
         Entryfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         Entryfee.setText("0");
-        ThirdFrame.add(Entryfee, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 160, 100, 30));
 
         guide_count.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         guide_count.setText("0");
-        ThirdFrame.add(guide_count, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 110, 80, 23));
 
         gc.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         gc.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
-        ThirdFrame.add(gc, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 210, -1));
 
         jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel13.setText("Guide Count' :");
-        ThirdFrame.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 90, 20));
 
         jLabel14.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel14.setText("Guide Count :");
-        ThirdFrame.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 100, 30));
 
         jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel15.setText("Entry Fees: ");
-        ThirdFrame.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 160, 100, 30));
 
         jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel16.setText("Boat Fees :");
-        ThirdFrame.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 230, 100, 30));
 
         boatfees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         boatfees.setText("0");
-        ThirdFrame.add(boatfees, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 230, 100, 30));
 
         jLabel18.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel18.setText("Gypse Fees :");
-        ThirdFrame.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 100, 30));
 
         gypsefees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         gypsefees.setText("0");
-        ThirdFrame.add(gypsefees, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, 100, 30));
 
         jLabel19.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel19.setText("Guide Fees :");
-        ThirdFrame.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 100, 30));
 
         guidefees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         guidefees.setText("0");
-        ThirdFrame.add(guidefees, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 100, 30));
 
         jLabel17.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel17.setText("Hours :");
-        ThirdFrame.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 110, 100, 30));
 
         t_hours.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         t_hours.setText("0");
-        ThirdFrame.add(t_hours, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 110, 100, 30));
 
         jLabel20.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel20.setText("Canopy Fees: ");
-        ThirdFrame.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 170, 100, 30));
 
         canofees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         canofees.setText("0");
-        ThirdFrame.add(canofees, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 170, 100, 30));
 
         jLabel21.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel21.setText("Joy Fees: ");
-        ThirdFrame.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 240, 100, 30));
 
         joyfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         joyfee.setText("0");
-        ThirdFrame.add(joyfee, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 240, 100, 30));
 
         jLabel22.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel22.setText("Walk Fees: ");
-        ThirdFrame.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 230, 100, 30));
 
         walkfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         walkfee.setText("0");
-        ThirdFrame.add(walkfee, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 230, 88, 23));
 
         jLabel23.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel23.setText("Tawa BoatFees :");
-        ThirdFrame.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 160, 100, 30));
 
         tawa.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         tawa.setText("0");
-        ThirdFrame.add(tawa, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 160, 100, 30));
 
         jLabel24.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel24.setText("Room Fees");
-        ThirdFrame.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 110, 100, 30));
 
         roomfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         roomfee.setText("0");
-        ThirdFrame.add(roomfee, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 110, 88, 23));
 
         jLabel25.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel25.setText("Government");
-        ThirdFrame.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 100, 100, 30));
 
         gov.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         gov.setText("0");
-        ThirdFrame.add(gov, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 110, 88, 23));
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel9.setText("Guide Number ");
-        ThirdFrame.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 30, 150, 30));
 
         jComboBox1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
-        ThirdFrame.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 30, 60, 30));
 
         jComboBox2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
-        ThirdFrame.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 30, 60, 30));
 
         jComboBox3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
-        ThirdFrame.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 30, 60, 30));
 
         jComboBox4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
-        ThirdFrame.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 30, 60, 30));
 
-        getContentPane().add(ThirdFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 1820, 300));
+        javax.swing.GroupLayout ThirdFrameLayout = new javax.swing.GroupLayout(ThirdFrame);
+        ThirdFrame.setLayout(ThirdFrameLayout);
+        ThirdFrameLayout.setHorizontalGroup(
+            ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ThirdFrameLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ThirdFrameLayout.createSequentialGroup()
+                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10))
+                        .addGap(18, 18, 18)
+                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(ThirdFrameLayout.createSequentialGroup()
+                                .addComponent(gypsefees, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(422, 422, 422)
+                                .addComponent(boatfees, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(ThirdFrameLayout.createSequentialGroup()
+                                .addComponent(touristcount, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(gov, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tawa, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(ThirdFrameLayout.createSequentialGroup()
+                                .addGap(190, 190, 190)
+                                .addComponent(joyfee, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ThirdFrameLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)
+                                .addComponent(t_hours, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(roomfee, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ThirdFrameLayout.createSequentialGroup()
+                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(ThirdFrameLayout.createSequentialGroup()
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)
+                                .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(130, 130, 130)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ThirdFrameLayout.createSequentialGroup()
+                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(ThirdFrameLayout.createSequentialGroup()
+                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(guidefees, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(38, 38, 38)
+                                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(ThirdFrameLayout.createSequentialGroup()
+                                        .addGap(144, 144, 144)
+                                        .addComponent(guide_count, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(ThirdFrameLayout.createSequentialGroup()
+                                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(44, 44, 44)
+                                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(ThirdFrameLayout.createSequentialGroup()
+                                                .addComponent(walkfee, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(ThirdFrameLayout.createSequentialGroup()
+                                                .addComponent(Entryfee, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel23)))))
+                                .addGap(174, 174, 174)
+                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(50, 50, 50)
+                        .addComponent(canofees, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        ThirdFrameLayout.setVerticalGroup(
+            ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ThirdFrameLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(58, 58, 58)
+                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(guidefees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(guide_count, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(gov, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(t_hours, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(canofees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tawa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Entryfee, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(touristcount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(gypsefees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(walkfee, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(boatfees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(joyfee, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(roomfee, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22))
+        );
+
+        getContentPane().add(ThirdFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 1820, 300));
 
         FourthFrame.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel12.setText("TOTAL :");
-        FourthFrame.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, 20));
+        FourthFrame.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, 20));
 
         totalamt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         FourthFrame.add(totalamt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, 123, 20));
@@ -569,7 +671,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton3.setText("CLEAR");
         FourthFrame.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 20, 160, 30));
 
-        getContentPane().add(FourthFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 730, 1120, 60));
+        getContentPane().add(FourthFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 710, 1820, 60));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
