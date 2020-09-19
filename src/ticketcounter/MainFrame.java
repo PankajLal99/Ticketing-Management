@@ -13,18 +13,17 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 // Project Imports
-
 /**
  *
  * @author Pankaj
  */
-
 //    My classes
-    
-
 
 public class MainFrame extends javax.swing.JFrame {
     // Object for Functions
@@ -34,14 +33,32 @@ public class MainFrame extends javax.swing.JFrame {
     Link db = new Link();
     Statement st;
     ResultSet rs;
-    void SetArea(){
-        model = (DefaultComboBoxModel) AreaList.getModel();
+    
+    void visibility(){
+        safari_modes.setVisible(false);
+        safari_types.setVisible(false);
+        boat_types.setVisible(false);
+        jhr.setVisible(false);
+        jhrl.setVisible(false);
+        den.setVisible(false);
+        nag.setVisible(false);
+        day.setVisible(false);
+        roomno.setVisible(false);
+        dayl.setVisible(false);
+        rooml.setVisible(false);
+        source.setVisible(false);
+        online.setVisible(false);
+//        onlinepaid.setVisible(false);
+//        chamt.setVisible(false);
+    }    
+    void SetActivity(){
+        model = (DefaultComboBoxModel) ActivityList.getModel();
         List <String> l = new ArrayList<>();
-        l=func.GetArea(st);
+        l=func.GetActivity(st);
         for(int i=0;i<l.size();i++){
             model.insertElementAt(l.get(i),i);
         }
-        AreaList.setModel(model);
+        ActivityList.setModel(model);
     }
     
     
@@ -50,9 +67,9 @@ public class MainFrame extends javax.swing.JFrame {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         st=db.Connection();
-        AreaCount.setText(String.valueOf(cal.CountArea(st)));
+        TicketCount.setText(String.valueOf(cal.CountTicket(st)));
         showDate.setText(func.SetDate());
-        SetArea();
+        visibility();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,270 +80,783 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
+        buttonGroup4 = new javax.swing.ButtonGroup();
+        buttonGroup5 = new javax.swing.ButtonGroup();
         FirstFrame = new javax.swing.JPanel();
         Heading = new javax.swing.JLabel();
         SecondFrame = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        showDate = new javax.swing.JLabel();
         TicketCount = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        leader = new javax.swing.JTextField();
+        address = new javax.swing.JTextField();
         Nation = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        AreaCount = new javax.swing.JLabel();
-        ThirdFrame = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        AreaList = new javax.swing.JComboBox();
+        mcount = new javax.swing.JTextField();
+        fcount = new javax.swing.JTextField();
+        ccount = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
+        ActivityList = new javax.swing.JComboBox();
+        safari_types = new javax.swing.JPanel();
+        ladga = new javax.swing.JRadioButton();
+        mahal = new javax.swing.JRadioButton();
+        chutki = new javax.swing.JRadioButton();
+        choorna = new javax.swing.JRadioButton();
+        cday = new javax.swing.JLabel();
+        cdayf = new javax.swing.JTextField();
+        jhrl = new javax.swing.JLabel();
+        jhr = new javax.swing.JTextField();
+        boat_types = new javax.swing.JPanel();
+        s6 = new javax.swing.JRadioButton();
+        s8 = new javax.swing.JRadioButton();
+        s10 = new javax.swing.JRadioButton();
+        hrs = new javax.swing.JLabel();
+        boathr = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        showDate = new javax.swing.JLabel();
+        rooml = new javax.swing.JLabel();
+        roomno = new javax.swing.JTextField();
+        day = new javax.swing.JTextField();
+        source = new javax.swing.JCheckBox();
+        den = new javax.swing.JRadioButton();
+        nag = new javax.swing.JRadioButton();
+        dayl = new javax.swing.JLabel();
+        safari_modes = new javax.swing.JPanel();
+        online = new javax.swing.JRadioButton();
+        paidamt = new javax.swing.JComboBox();
+        ThirdFrame = new javax.swing.JPanel();
+        touristcount = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        Entryfee = new javax.swing.JLabel();
+        guide_count = new javax.swing.JLabel();
+        gc = new javax.swing.JComboBox();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        boatfees = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        gypsefees = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        guidefees = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        t_hours = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        canofees = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        joyfee = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        walkfee = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        tawa = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        roomfee = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        gov = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
-        ar = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox();
+        jComboBox3 = new javax.swing.JComboBox();
+        jComboBox4 = new javax.swing.JComboBox();
         FourthFrame = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        totalamt = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Heading.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         Heading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Heading.setText("Satpuda Forest Reserve");
+        Heading.setText("Satpuda Forest Reserve Project");
 
         javax.swing.GroupLayout FirstFrameLayout = new javax.swing.GroupLayout(FirstFrame);
         FirstFrame.setLayout(FirstFrameLayout);
         FirstFrameLayout.setHorizontalGroup(
             FirstFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FirstFrameLayout.createSequentialGroup()
-                .addContainerGap(298, Short.MAX_VALUE)
+                .addContainerGap(503, Short.MAX_VALUE)
                 .addComponent(Heading, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(226, 226, 226))
+                .addGap(587, 587, 587))
         );
         FirstFrameLayout.setVerticalGroup(
             FirstFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Heading, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(FirstFrameLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Heading, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        getContentPane().add(FirstFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 68, 1254, -1));
+        getContentPane().add(FirstFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1820, -1));
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel1.setText("Date :");
+        SecondFrame.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        showDate.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        TicketCount.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        SecondFrame.add(TicketCount, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 11, 220, 26));
 
-        TicketCount.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel3.setText("Ticket Number :");
+        SecondFrame.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 11, -1, 23));
 
-        jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel2.setText("Address :");
+        SecondFrame.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 141, 126, 26));
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel4.setText("Group Leader :");
+        SecondFrame.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 126, 34));
 
-        jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel5.setText("Nationality :");
+        SecondFrame.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 205, 126, 26));
 
-        jTextField1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        leader.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        SecondFrame.add(leader, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 217, -1));
 
-        jTextField2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        address.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        SecondFrame.add(address, new org.netbeans.lib.awtextra.AbsoluteConstraints(172, 140, 217, -1));
 
-        Nation.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        Nation.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Nation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Indian", "Foreigner" }));
+        SecondFrame.add(Nation, new org.netbeans.lib.awtextra.AbsoluteConstraints(172, 204, 217, -1));
 
-        jLabel6.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel6.setText("Male Count :");
+        SecondFrame.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 80, 119, 32));
 
-        jLabel7.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel7.setText("Children Count :");
+        SecondFrame.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 200, 178, 29));
 
-        jLabel8.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel8.setText("Female Count :");
+        SecondFrame.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 140, -1, 26));
 
-        jTextField3.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        mcount.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        mcount.setText("0");
+        SecondFrame.add(mcount, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 80, 162, -1));
 
-        jTextField4.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        fcount.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        fcount.setText("0");
+        SecondFrame.add(fcount, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 140, 162, -1));
 
-        jTextField5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jTextField5.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        ccount.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        ccount.setText("0");
+        ccount.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        SecondFrame.add(ccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 200, 162, -1));
 
-        jLabel9.setText("Count Area");
+        jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel11.setText("Select Activity :");
+        SecondFrame.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 60, 119, 30));
 
-        javax.swing.GroupLayout SecondFrameLayout = new javax.swing.GroupLayout(SecondFrame);
-        SecondFrame.setLayout(SecondFrameLayout);
-        SecondFrameLayout.setHorizontalGroup(
-            SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SecondFrameLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(SecondFrameLayout.createSequentialGroup()
-                        .addComponent(TicketCount, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(showDate, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))
-                    .addGroup(SecondFrameLayout.createSequentialGroup()
-                        .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField1)
-                            .addComponent(Nation, javax.swing.GroupLayout.Alignment.LEADING, 0, 161, Short.MAX_VALUE))
-                        .addGap(253, 253, 253)
-                        .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(34, 34, 34)
-                        .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField3))
-                        .addGap(79, 79, 79)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(AreaCount, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(58, 58, 58))))
-        );
-        SecondFrameLayout.setVerticalGroup(
-            SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SecondFrameLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(showDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TicketCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SecondFrameLayout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                        .addGap(3, 3, 3))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(38, 38, 38)
-                .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SecondFrameLayout.createSequentialGroup()
-                        .addGap(0, 4, Short.MAX_VALUE)
-                        .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(AreaCount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(31, 31, 31)
-                .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(SecondFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Nation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(38, 38, 38))
-        );
-
-        getContentPane().add(SecondFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 166, -1, -1));
-
-        jLabel10.setText("Area :");
-
-        AreaList.setModel(model);
-        AreaList.addActionListener(new java.awt.event.ActionListener() {
+        ActivityList.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        ActivityList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Gypsy_Safari", "Boating", "Cannoing", "Walking", "Joy_Ride", "Tawa_Boat_Fee", "VIP_Room", "Room" }));
+        ActivityList.setSelectedIndex(-1);
+        ActivityList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AreaListActionPerformed(evt);
+                ActivityListActionPerformed(evt);
             }
         });
+        SecondFrame.add(ActivityList, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 60, 218, 23));
 
-        jLabel11.setText("Select Activity :");
+        safari_types.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout ThirdFrameLayout = new javax.swing.GroupLayout(ThirdFrame);
-        ThirdFrame.setLayout(ThirdFrameLayout);
-        ThirdFrameLayout.setHorizontalGroup(
-            ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ThirdFrameLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(AreaList, 0, 168, Short.MAX_VALUE)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(74, 74, 74)
-                .addComponent(ar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(709, Short.MAX_VALUE))
+        buttonGroup1.add(ladga);
+        ladga.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        ladga.setText("LAGDA");
+        safari_types.add(ladga, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 0, -1, -1));
+
+        buttonGroup1.add(mahal);
+        mahal.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        mahal.setText("JHINJHINI MAHAL");
+        safari_types.add(mahal, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 0, -1, -1));
+
+        buttonGroup1.add(chutki);
+        chutki.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        chutki.setText("CHUTKIDEV");
+        safari_types.add(chutki, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 0, -1, -1));
+
+        buttonGroup1.add(choorna);
+        choorna.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        choorna.setText("CHOORNA");
+        safari_types.add(choorna, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 0, -1, -1));
+
+        cday.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        cday.setText("DAYS :");
+        safari_types.add(cday, new org.netbeans.lib.awtextra.AbsoluteConstraints(524, 4, -1, -1));
+
+        cdayf.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        safari_types.add(cdayf, new org.netbeans.lib.awtextra.AbsoluteConstraints(573, 1, 80, -1));
+
+        jhrl.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jhrl.setText("HOURS :");
+        safari_types.add(jhrl, new org.netbeans.lib.awtextra.AbsoluteConstraints(436, 91, -1, -1));
+
+        jhr.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        safari_types.add(jhr, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, 70, -1));
+
+        SecondFrame.add(safari_types, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 110, 670, 30));
+
+        boat_types.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        buttonGroup2.add(s6);
+        s6.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        s6.setText("6 SEATER");
+        boat_types.add(s6, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 0, -1, -1));
+
+        buttonGroup2.add(s8);
+        s8.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        s8.setText("8 SEATER");
+        boat_types.add(s8, new org.netbeans.lib.awtextra.AbsoluteConstraints(113, 0, -1, -1));
+
+        buttonGroup2.add(s10);
+        s10.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        s10.setText("10 SEATER");
+        boat_types.add(s10, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, -1, -1));
+
+        hrs.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        hrs.setText("HOURS :");
+        boat_types.add(hrs, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 4, -1, -1));
+
+        boathr.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        boat_types.add(boathr, new org.netbeans.lib.awtextra.AbsoluteConstraints(429, 1, 123, -1));
+
+        SecondFrame.add(boat_types, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 150, 603, -1));
+
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel1.setText("Date :");
+        SecondFrame.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 20, 62, 26));
+
+        showDate.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        SecondFrame.add(showDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 20, 220, 26));
+
+        rooml.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        rooml.setText("ROOM NO. :");
+        SecondFrame.add(rooml, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 190, -1, 22));
+
+        roomno.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        SecondFrame.add(roomno, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 190, 70, -1));
+
+        day.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        SecondFrame.add(day, new org.netbeans.lib.awtextra.AbsoluteConstraints(1470, 190, 70, -1));
+
+        source.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        source.setText("Govt.");
+        SecondFrame.add(source, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 220, 101, -1));
+
+        buttonGroup4.add(den);
+        den.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        den.setText("Denwa");
+        SecondFrame.add(den, new org.netbeans.lib.awtextra.AbsoluteConstraints(1350, 220, -1, -1));
+
+        buttonGroup4.add(nag);
+        nag.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        nag.setText("NagDwari");
+        SecondFrame.add(nag, new org.netbeans.lib.awtextra.AbsoluteConstraints(1460, 220, -1, -1));
+
+        dayl.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        dayl.setText("DAYS");
+        SecondFrame.add(dayl, new org.netbeans.lib.awtextra.AbsoluteConstraints(1420, 190, -1, 22));
+
+        buttonGroup5.add(online);
+        online.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        online.setText("Online");
+
+        paidamt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4" }));
+
+        javax.swing.GroupLayout safari_modesLayout = new javax.swing.GroupLayout(safari_modes);
+        safari_modes.setLayout(safari_modesLayout);
+        safari_modesLayout.setHorizontalGroup(
+            safari_modesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(safari_modesLayout.createSequentialGroup()
+                .addGap(0, 10, Short.MAX_VALUE)
+                .addComponent(online)
+                .addGap(45, 45, 45)
+                .addComponent(paidamt, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
-        ThirdFrameLayout.setVerticalGroup(
-            ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ThirdFrameLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AreaList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(127, Short.MAX_VALUE))
+        safari_modesLayout.setVerticalGroup(
+            safari_modesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(safari_modesLayout.createSequentialGroup()
+                .addGroup(safari_modesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(safari_modesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(paidamt, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2))
+                    .addGroup(safari_modesLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(online)))
+                .addGap(0, 17, Short.MAX_VALUE))
         );
 
-        getContentPane().add(ThirdFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 455, 1234, -1));
+        SecondFrame.add(safari_modes, new org.netbeans.lib.awtextra.AbsoluteConstraints(1510, 50, 260, 50));
 
-        javax.swing.GroupLayout FourthFrameLayout = new javax.swing.GroupLayout(FourthFrame);
-        FourthFrame.setLayout(FourthFrameLayout);
-        FourthFrameLayout.setHorizontalGroup(
-            FourthFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1234, Short.MAX_VALUE)
-        );
-        FourthFrameLayout.setVerticalGroup(
-            FourthFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        getContentPane().add(SecondFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 1790, 280));
 
-        getContentPane().add(FourthFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 700, 1234, -1));
+        ThirdFrame.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setText("Add Area");
+        touristcount.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        touristcount.setText("0");
+        ThirdFrame.add(touristcount, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, 88, 30));
+
+        jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel10.setText("Total Tourist :");
+        ThirdFrame.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 88, 30));
+
+        Entryfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        Entryfee.setText("0");
+        ThirdFrame.add(Entryfee, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 160, 100, 30));
+
+        guide_count.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        guide_count.setText("0");
+        ThirdFrame.add(guide_count, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 110, 80, 23));
+
+        gc.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        gc.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
+        ThirdFrame.add(gc, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 210, -1));
+
+        jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel13.setText("Guide Count' :");
+        ThirdFrame.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 90, 20));
+
+        jLabel14.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel14.setText("Guide Count :");
+        ThirdFrame.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 100, 30));
+
+        jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel15.setText("Entry Fees: ");
+        ThirdFrame.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 160, 100, 30));
+
+        jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel16.setText("Boat Fees :");
+        ThirdFrame.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 230, 100, 30));
+
+        boatfees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        boatfees.setText("0");
+        ThirdFrame.add(boatfees, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 230, 100, 30));
+
+        jLabel18.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel18.setText("Gypse Fees :");
+        ThirdFrame.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 100, 30));
+
+        gypsefees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        gypsefees.setText("0");
+        ThirdFrame.add(gypsefees, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, 100, 30));
+
+        jLabel19.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel19.setText("Guide Fees :");
+        ThirdFrame.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 100, 30));
+
+        guidefees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        guidefees.setText("0");
+        ThirdFrame.add(guidefees, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 100, 30));
+
+        jLabel17.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel17.setText("Hours :");
+        ThirdFrame.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 110, 100, 30));
+
+        t_hours.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        t_hours.setText("0");
+        ThirdFrame.add(t_hours, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 110, 100, 30));
+
+        jLabel20.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel20.setText("Canopy Fees: ");
+        ThirdFrame.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 170, 100, 30));
+
+        canofees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        canofees.setText("0");
+        ThirdFrame.add(canofees, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 170, 100, 30));
+
+        jLabel21.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel21.setText("Joy Fees: ");
+        ThirdFrame.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 240, 100, 30));
+
+        joyfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        joyfee.setText("0");
+        ThirdFrame.add(joyfee, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 240, 100, 30));
+
+        jLabel22.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel22.setText("Walk Fees: ");
+        ThirdFrame.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 230, 100, 30));
+
+        walkfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        walkfee.setText("0");
+        ThirdFrame.add(walkfee, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 230, 88, 23));
+
+        jLabel23.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel23.setText("Tawa BoatFees :");
+        ThirdFrame.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 160, 100, 30));
+
+        tawa.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        tawa.setText("0");
+        ThirdFrame.add(tawa, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 160, 100, 30));
+
+        jLabel24.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel24.setText("Room Fees");
+        ThirdFrame.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 110, 100, 30));
+
+        roomfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        roomfee.setText("0");
+        ThirdFrame.add(roomfee, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 110, 88, 23));
+
+        jLabel25.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel25.setText("Government");
+        ThirdFrame.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 100, 100, 30));
+
+        gov.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        gov.setText("0");
+        ThirdFrame.add(gov, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 110, 88, 23));
+
+        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel9.setText("Guide Number ");
+        ThirdFrame.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 30, 150, 30));
+
+        jComboBox1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
+        ThirdFrame.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 30, 60, 30));
+
+        jComboBox2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
+        ThirdFrame.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 30, 60, 30));
+
+        jComboBox3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
+        ThirdFrame.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 30, 60, 30));
+
+        jComboBox4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
+        ThirdFrame.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 30, 60, 30));
+
+        getContentPane().add(ThirdFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 1820, 300));
+
+        FourthFrame.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel12.setText("TOTAL :");
+        FourthFrame.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, 20));
+
+        totalamt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        FourthFrame.add(totalamt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, 123, 20));
+
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jButton2.setText("SAVE");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        FourthFrame.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 20, 171, 30));
+
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jButton1.setText("CALCULATE");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 840, 170, 30));
+        FourthFrame.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, 177, 30));
 
-        jButton2.setText("Add Activity");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 840, 160, 30));
+        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jButton3.setText("CLEAR");
+        FourthFrame.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 20, 160, 30));
+
+        getContentPane().add(FourthFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 730, 1120, 60));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void AreaListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AreaListActionPerformed
-        // TODO add your handling code here:
-        ar.setText(String.valueOf(AreaList.getSelectedItem()));
-    }//GEN-LAST:event_AreaListActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false); //you can't see me!
-        this.dispose(); //Destroy the JFrame object
-        new AddAreaFrame().setVisible(true);
+        int male,female,child,Vtotal,Cal_total;
+        male=Integer.parseInt(mcount.getText());
+        female=Integer.parseInt(fcount.getText());
+        child=Integer.parseInt(ccount.getText());
+        Cal_total=male+female;
+        Vtotal=male+female+child;
+        
+        int guide=0,boat=0,Entryfees=0,gypsy=0;
+        double hr=0,amt=0,tamt=0;
+        
+        if (ladga.isSelected()==true){
+            if (online.isSelected()==true){
+                if(Cal_total>6){
+                    JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
+                }
+                else{
+                    Entryfees=0;
+                    gypsy=2700;
+                    boat=50*Cal_total;
+                    guide=480;
+                    boatfees.setText(String.valueOf(boat));
+                    gypsefees.setText(String.valueOf(gypsy));
+                    Entryfee.setText(String.valueOf(Entryfees));
+                    totalamt.setText(String.valueOf(cal.Ladga_Online(Cal_total)));
+                }
+            }
+            else{
+                if(Cal_total>6){
+                    JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
+                }
+                else{
+                    Entryfees=1500;
+                    gypsy=2700;
+                    boat=50*Cal_total;
+                    guide=480;
+                    boatfees.setText(String.valueOf(boat));
+                    gypsefees.setText(String.valueOf(gypsy));
+                    Entryfee.setText(String.valueOf(Entryfees));
+                    totalamt.setText(String.valueOf(cal.Ladga(Cal_total)));
+                }
+            }
+        }
+        else if (mahal.isSelected()==true){
+                if(Cal_total>6){
+                    JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
+                }
+                else{
+                    Entryfees=1500;
+                    gypsy=3300;
+                    boat=50*Cal_total;
+                    guide=480;
+                    boatfees.setText(String.valueOf(boat));
+                    gypsefees.setText(String.valueOf(gypsy));
+                    Entryfee.setText(String.valueOf(Entryfees));
+                    totalamt.setText(String.valueOf(cal.Mahal(Cal_total)));
+                }
+        }
+        
+        else if (chutki.isSelected()==true){
+                if(Cal_total>6){
+                    JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
+                }
+                else{
+                    Entryfees=1500;
+                    gypsy=4000;
+                    boat=50*Cal_total;
+                    guide=480;
+                    boatfees.setText(String.valueOf(boat));
+                    gypsefees.setText(String.valueOf(gypsy));
+                    Entryfee.setText(String.valueOf(Entryfees));
+                    totalamt.setText(String.valueOf(cal.Dev(Cal_total)));
+                }
+        }
+//        Doubtfull work 
+        else if (choorna.isSelected()==true){
+            double d=0;
+            if(Cal_total>6){
+                    JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
+            }
+            else{
+                    int paid;
+                    Entryfees=1500*Integer.parseInt(String.valueOf(paidamt.getSelectedItem()));
+                    gypsy=5500;
+                    boat=50*Cal_total;
+                    guide=960;
+                    d=Double.parseDouble(cdayf.getText());
+                    boatfees.setText(String.valueOf(boat));
+                    if (d>1){
+                        Entryfees*=d;
+                        gypsy*=d;
+                        guide*=d;;
+                    }
+                    gypsefees.setText(String.valueOf(gypsy));
+                    Entryfee.setText(String.valueOf(Entryfees));
+                    totalamt.setText(String.valueOf(gypsy+Entryfees+boat+guide));
+                }
+            }
+        
+// Chooorna 
+        else if (s6.isSelected()==true){
+            boat=1200;
+            guide=480;
+            hr=Double.parseDouble(boathr.getText());
+            amt=cal.Six_Boat(hr);
+            tamt+=guide+amt;
+            t_hours.setText(String.valueOf(hr));
+            boatfees.setText(String.valueOf(amt));
+            totalamt.setText(String.valueOf(tamt));
+        }
+        else if (s8.isSelected()==true){
+            boat=1350;
+            guide=480;
+            hr=Double.parseDouble(boathr.getText());
+            amt=cal.Eight_boat(hr);
+            tamt+=guide+amt;
+            t_hours.setText(String.valueOf(hr));
+            boatfees.setText(String.valueOf(amt));
+            totalamt.setText(String.valueOf(tamt));
+        }
+        else if (s10.isSelected()==true){
+            boat=1500;
+            guide=480;
+            hr=Double.parseDouble(boathr.getText());
+            amt=cal.Ten_boat(hr);
+            tamt+=guide+amt;
+            t_hours.setText(String.valueOf(hr));
+            boatfees.setText(String.valueOf(amt));
+            totalamt.setText(String.valueOf(tamt));
+        }
+        else if (ActivityList.getSelectedIndex()==2){
+            Entryfees=900;
+            guide=600*Integer.parseInt(String.valueOf(gc.getSelectedItem()));
+            amt=cal.Cannoning(Cal_total);
+            tamt+=guide+amt;
+            canofees.setText(String.valueOf(amt));
+            totalamt.setText(String.valueOf(tamt));
+        }
+        else if (ActivityList.getSelectedIndex()==3){
+            Entryfees=250;
+            guide=700*Integer.parseInt(String.valueOf(gc.getSelectedItem()));
+            boat=150;
+            amt=cal.Walking(Cal_total);
+            boat*=Cal_total;
+            tamt+=guide+amt+boat;
+            boatfees.setText(String.valueOf(boat));
+            walkfee.setText(String.valueOf(amt));
+            totalamt.setText(String.valueOf(tamt));
+        }
+        else if (ActivityList.getSelectedIndex()==4){
+            Entryfees=1000;
+            boat=150*Cal_total;
+            hr=Double.parseDouble(jhr.getText());
+            amt=cal.JoyRide(Cal_total,hr);
+            tamt=amt+boat;
+            boatfees.setText(String.valueOf(boat));
+            joyfee.setText(String.valueOf(amt));
+            t_hours.setText(String.valueOf(hr));
+            totalamt.setText(String.valueOf(tamt));
+        }
+        else if (ActivityList.getSelectedIndex()==5){
+            int tawa_trip=1100;
+            tawa.setText(String.valueOf(tawa_trip));
+            totalamt.setText(String.valueOf(tawa_trip));
+        }
+        else if (ActivityList.getSelectedIndex()==6){
+            int roombase=3000,g=600;
+            int days=Integer.parseInt(day.getText());
+            if (source.isSelected()==true){
+                gov.setText(String.valueOf(g*days));
+                totalamt.setText(String.valueOf(g*days));
+            }
+            else{
+                roomfee.setText(String.valueOf(roombase*days));
+                totalamt.setText(String.valueOf(roombase*days));
+            }
+            
+        }
+        else if (ActivityList.getSelectedIndex()==7){
+            int roombase=2000,g=400;
+            int days=Integer.parseInt(day.getText());
+            if (source.isSelected()==true){
+                gov.setText(String.valueOf(g*days));
+                totalamt.setText(String.valueOf((g)*days));
+            }
+            else{
+                roomfee.setText(String.valueOf(roombase*days));
+                totalamt.setText(String.valueOf((roombase)*days));
+            }
+        }
+        touristcount.setText(String.valueOf(Vtotal));     
+        guidefees.setText(String.valueOf(guide));
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void ActivityListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActivityListActionPerformed
+        // TODO add your handling code here:
+        int male,female,child,Vtotal,Cal_total;
+        male=Integer.parseInt(mcount.getText());
+        female=Integer.parseInt(fcount.getText());
+        child=Integer.parseInt(ccount.getText());
+        Cal_total=male+female;
+        Vtotal=male+female+child;
+        touristcount.setText(String.valueOf(Vtotal));
+        if(ActivityList.getSelectedIndex()==0){
+            online.setVisible(true);
+//            onlinepaid.setVisible(true);
+//            chamt.setVisible(true);
+            safari_modes.setVisible(true);
+            safari_types.setVisible(true);
+            boat_types.setVisible(false);
+        }
+        else if(ActivityList.getSelectedIndex()==0){
+            online.setVisible(false);
+//            onlinepaid.setVisible(false);
+//            chamt.setVisible(false);
+            safari_modes.setVisible(true);
+            safari_types.setVisible(true);
+            boat_types.setVisible(false);
+        }
+        else if (ActivityList.getSelectedIndex()==1){
+            safari_modes.setVisible(false);
+            safari_types.setVisible(false);
+            boat_types.setVisible(true);
+        }
+        else if (ActivityList.getSelectedIndex()==4){
+            jhr.setVisible(true);
+            jhrl.setVisible(true);
+        }
+        else if (ActivityList.getSelectedIndex()==6){
+            den.setVisible(true);
+            nag.setVisible(true);
+            day.setVisible(true);
+            dayl.setVisible(true);
+            source.setVisible(true);
+        }
+        else if (ActivityList.getSelectedIndex()==7){
+            day.setVisible(true);
+            roomno.setVisible(true);
+            dayl.setVisible(true);
+            rooml.setVisible(true);
+            source.setVisible(true);
+        }
+        else{
+            visibility();
+        }
+    }//GEN-LAST:event_ActivityListActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/DD");  
+        LocalDateTime now = LocalDateTime.now(); 
+        DateTimeFormatter dtfn = DateTimeFormatter.ofPattern("HH:mm:ss");  
+        LocalDateTime nown = LocalDateTime.now(); 
+        st=Link.Connection();
+        String Query;
+        int tno,mc,fc,cc,gc,ef,gf,bf,gif;
+        String date,time,lead,addr,nation,activity;
+        double hr;
+        tno=Integer.parseInt(TicketCount.getText());
+//        date online
+        date=dtf.format(now);
+//        time online
+        time=dtfn.format(nown);
+        lead=leader.getText();
+        addr=address.getText();
+        nation=String.valueOf(Nation.getSelectedItem());
+        mc=Integer.parseInt(mcount.getText());
+        fc=Integer.parseInt(mcount.getText());
+        cc=Integer.parseInt(ccount.getText());
+        activity=String.valueOf(ActivityList.getSelectedItem());
+//        Guide count or guide related
+        gc=Integer.parseInt(guide_count.getText());
+        ef=Integer.parseInt(Entryfee.getText());
+        gf=Integer.parseInt(gypsefees.getText());
+        bf=Integer.parseInt(boatfees.getText());
+        gif=Integer.parseInt(guide_count.getText());
+        hr=Double.parseDouble(t_hours.getText());
+//        Query
+
+        
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -361,8 +891,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel AreaCount;
-    private javax.swing.JComboBox AreaList;
+    private javax.swing.JComboBox ActivityList;
+    private javax.swing.JLabel Entryfee;
     private javax.swing.JPanel FirstFrame;
     private javax.swing.JPanel FourthFrame;
     private javax.swing.JLabel Heading;
@@ -370,14 +900,56 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel SecondFrame;
     private javax.swing.JPanel ThirdFrame;
     private javax.swing.JLabel TicketCount;
-    private javax.swing.JLabel ar;
+    private javax.swing.JTextField address;
+    private javax.swing.JPanel boat_types;
+    private javax.swing.JLabel boatfees;
+    private javax.swing.JTextField boathr;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.ButtonGroup buttonGroup4;
+    private javax.swing.ButtonGroup buttonGroup5;
+    private javax.swing.JLabel canofees;
+    private javax.swing.JTextField ccount;
+    private javax.swing.JLabel cday;
+    private javax.swing.JTextField cdayf;
+    private javax.swing.JRadioButton choorna;
+    private javax.swing.JRadioButton chutki;
+    private javax.swing.JTextField day;
+    private javax.swing.JLabel dayl;
+    private javax.swing.JRadioButton den;
+    private javax.swing.JTextField fcount;
+    private javax.swing.JComboBox gc;
+    private javax.swing.JLabel gov;
+    private javax.swing.JLabel guide_count;
+    private javax.swing.JLabel guidefees;
+    private javax.swing.JLabel gypsefees;
+    private javax.swing.JLabel hrs;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox jComboBox3;
+    private javax.swing.JComboBox jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -385,11 +957,30 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jhr;
+    private javax.swing.JLabel jhrl;
+    private javax.swing.JLabel joyfee;
+    private javax.swing.JRadioButton ladga;
+    private javax.swing.JTextField leader;
+    private javax.swing.JRadioButton mahal;
+    private javax.swing.JTextField mcount;
+    private javax.swing.JRadioButton nag;
+    private javax.swing.JRadioButton online;
+    private javax.swing.JComboBox paidamt;
+    private javax.swing.JLabel roomfee;
+    private javax.swing.JLabel rooml;
+    private javax.swing.JTextField roomno;
+    private javax.swing.JRadioButton s10;
+    private javax.swing.JRadioButton s6;
+    private javax.swing.JRadioButton s8;
+    private javax.swing.JPanel safari_modes;
+    private javax.swing.JPanel safari_types;
     private javax.swing.JLabel showDate;
+    private javax.swing.JCheckBox source;
+    private javax.swing.JLabel t_hours;
+    private javax.swing.JLabel tawa;
+    private javax.swing.JLabel totalamt;
+    private javax.swing.JLabel touristcount;
+    private javax.swing.JLabel walkfee;
     // End of variables declaration//GEN-END:variables
 }
