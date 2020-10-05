@@ -6,17 +6,34 @@
 
 package ticketcounter;
 // Project Imports
-import java.util.*;
-// DB Imports
 import Connectivity.Link;
+import Connectivity.print_connection;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+
+import java.util.*;
+// DB Imports
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 // Project Imports
 /**
@@ -34,22 +51,340 @@ public class MainFrame extends javax.swing.JFrame {
     Statement st;
     ResultSet rs;
     
+    
+    void printmain(){
+        Connection pconn;
+       print_connection p = new print_connection();
+       pconn=print_connection.Connection();
+        int t=Integer.parseInt(TicketCount.getText());
+        try{
+          //InputStream inp = new FileInputStream(new File("G:\\COLLEGE\\java\\MyProject\\src\\myproject\\Bill_1.jrxml"));
+          InputStream inp = new FileInputStream(new File("F:\\Madhai Software\\reports\\MadhaiTicket.jrxml"));
+            JasperDesign jd =JRXmlLoader.load(inp);
+            String sql ="select * from main_table where TicketNo="+t+"";
+            JRDesignQuery newQuery = new JRDesignQuery();
+            newQuery.setText(sql);
+            jd.setQuery(newQuery);
+            JasperReport jr =JasperCompileManager.compileReport(jd);
+            HashMap para = new HashMap();
+            JasperPrint j = JasperFillManager.fillReport(jr,para,pconn);
+            JasperViewer.viewReport(j,false);
+            OutputStream os = new FileOutputStream(new File("F:\\Madhai Software\\reports\\abc.jrxml"));
+            JasperExportManager.exportReportToPdfStream(j,os);
+            clear();
+           }
+        
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    void savedata(){
+        String round="-";
+        st=Link.Connection();
+        String Query;
+        int tno,mc,fc,cc,gc,ef,gf,bf,guf,tbf,wf,jf,cf,room=0,govt=0;
+        String lead,addr,nation,activity,gn,query;
+        double hr,total;
+        String idn;
+        tno=Integer.parseInt(TicketCount.getText());
+        lead=leader.getText();
+        addr=address.getText();
+        nation=String.valueOf(Nation.getSelectedItem());
+        mc=Integer.parseInt(mcount.getText());
+        fc=Integer.parseInt(fcount.getText());
+        cc=Integer.parseInt(ccount.getText());
+        gn=String.valueOf(g1.getSelectedItem())+','+
+                String.valueOf(g2.getSelectedItem())+','
+                +String.valueOf(g3.getSelectedItem())+','
+                    +String.valueOf(g4.getSelectedItem());
+        gc=Integer.parseInt(guide_count.getText());
+        idn=idnum.getText();
+        
+//        Gypsy_Safari, Boating, Cannoing, Walking, Joy_Ride, Tawa_Boat_Fee, VIP_Room, Room
+//              0         1       2          3        4          5            6         7
+        if (ActivityList.getSelectedIndex()==0){
+            if (ladga.isSelected() || chutki.isSelected() || mahal.isSelected() || choorna.isSelected() || keriya.isSelected()){
+                activity = String.valueOf(ActivityList.getSelectedItem());
+                ef=Integer.parseInt(Entryfee.getText());
+                gf=Integer.parseInt(gypsefees.getText());
+                bf=Integer.parseInt(boatfees.getText());
+                hr=Double.parseDouble(t_hours.getText());
+                guf=Integer.parseInt(guidefees.getText());
+                total=Double.parseDouble(totalamt.getText());
+                round=String.valueOf(getSafariname());
+                double days=Double.parseDouble(cdayf.getText());
+                String mist=othertext.getText();
+                int oamt=Integer.parseInt(otheramt.getText());
+                try{
+                    
+//INSERT INTO `main_table` (`TicketNo`, `DateTime`, `GroupLeader`, `Address`,
+//`Nationality`, `MaleCount`, `FemaleCount`, `ChildrenCount`, `Activity`, `GuideCount`, 
+//`Days`, `EntryFee`, `GypsyFee`, `Roomday`, `BoatFee`, `GuideFee`, `GuideNumber`, `Hours`, 
+//`TawaBoatFee`, `WalkFee`, `JoyFee`, `ConopyFee`, `RoomFee`, `RoomCount`, `NoofRoom`, `RoomType`,
+//`GovtFee`, `TotalFee`, `OtherFee`, `OtherRemark`) VALUES (NULL, CURRENT_TIMESTAMP,
+//        '', '', '', '', '', '0', '', NULL, '0', '0', '0', NULL, '0', '0', '', '0', '0', '0', '0', '0',
+//        '0', '0', NULL, NULL, '0', '', '0', NULL)                   
+//                        query="insert into main_table (GroupLeader,Address,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+//                                + "GuideCount,GuideNumber,GuideFee,TotalFee) values ('"+lead+"','"+addr+"','"+nation+"',"
+//                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+","+total+")";
+                        query="insert into main_table (GroupLeader,Address,Round,Nationality,IdNum,MaleCount,FemaleCount,ChildrenCount,Activity,"
+                                + "GuideCount,GuideNumber,GuideFee,GA,Days,EntryFee,GypsyFee,BoatFee,Hours,TotalFee,OtherFee,OtherRemark) values ('"+lead+"','"+addr+"','"+round+"','"+nation+"',"
+                                + "'"+idn+"',"+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+",'"+gova+"',"+days+","+ef+","+gf+","
+                                + ""+bf+","+hr+","+total+","+oamt+",'"+mist+"')";
+                        st.executeUpdate(query);
+                        JOptionPane.showMessageDialog(null, "RECORD INSERTED");
+                        
+                    }
+                    catch(SQLException e)
+                    {
+                        JOptionPane.showMessageDialog(null, e);
+                    }
+            }
+        }
+        else if (ActivityList.getSelectedIndex()==1){
+            if(s6.isSelected() || s8.isSelected() || s10.isSelected()){
+                round=String.valueOf(getBoatName());
+                activity = String.valueOf(ActivityList.getSelectedItem());
+                bf=Integer.parseInt(boatfees.getText());
+                guf=Integer.parseInt(guidefees.getText());
+                hr=Double.parseDouble(t_hours.getText());
+                String remark=otherremarks.getText();
+                double misamt=Double.parseDouble(miscfee.getText());
+                total=Double.parseDouble(totalamt.getText());
+                
+                try
+                    {
+//INSERT INTO `main_table` (`TicketNo`, `DateTime`, `GroupLeader`, `Address`,
+//`Nationality`, `MaleCount`, `FemaleCount`, `ChildrenCount`, `Activity`, `GuideCount`, 
+//`Days`, `EntryFee`, `GypsyFee`, `Roomday`, `BoatFee`, `GuideFee`, `GuideNumber`, `Hours`, 
+//`TawaBoatFee`, `WalkFee`, `JoyFee`, `ConopyFee`, `RoomFee`, `RoomCount`, `NoofRoom`, `RoomType`,
+//`GovtFee`, `TotalFee`, `OtherFee`, `OtherRemark`) VALUES (NULL, CURRENT_TIMESTAMP,
+//        '', '', '', '', '', '0', '', NULL, '0', '0', '0', NULL, '0', '0', '', '0', '0', '0', '0', '0',
+//        '0', '0', NULL, NULL, '0', '', '0', NULL)                   
+//                        query="insert into main_table (GroupLeader,Address,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+//                                + "GuideCount,GuideNumber,GuideFee,TotalFee) values ('"+lead+"','"+addr+"','"+nation+"',"
+//                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+","+total+")";
+                        query="insert into main_table (GroupLeader,Address,Round,IdNum,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+                                + "GuideCount,GuideNumber,GuideFee,BoatFee,Hours,TotalFee,OtherFee,OtherRemark) values ('"+lead+"','"+addr+"','"+round+"','"+idn+"','"+nation+"',"
+                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+","
+                                + ""+bf+","+hr+","+total+","+misamt+",'"+remark+"')";
+                        st.executeUpdate(query);
+                        JOptionPane.showMessageDialog(null, "RECORD INSERTED");
+                    }
+                    catch(SQLException e)
+                    {
+                        JOptionPane.showMessageDialog(null, e);
+                    }
+            }
+        }
+        else if (ActivityList.getSelectedIndex()==2){
+            activity = String.valueOf(ActivityList.getSelectedItem());
+            String remark=otherremarks.getText();
+            double misamt=Double.parseDouble(miscfee.getText());
+            cf=Integer.parseInt(canofees.getText());
+            guf=Integer.parseInt(guidefees.getText());
+            total=Double.parseDouble(totalamt.getText());
+            
+            try
+                    {
+//INSERT INTO `main_table` (`TicketNo`, `DateTime`, `GroupLeader`, `Address`,
+//`Nationality`, `MaleCount`, `FemaleCount`, `ChildrenCount`, `Activity`, `GuideCount`, 
+//`Days`, `EntryFee`, `GypsyFee`, `Roomday`, `BoatFee`, `GuideFee`, `GuideNumber`, `Hours`, 
+//`TawaBoatFee`, `WalkFee`, `JoyFee`, `ConopyFee`, `RoomFee`, `RoomCount`, `NoofRoom`, `RoomType`,
+//`GovtFee`, `TotalFee`, `OtherFee`, `OtherRemark`) VALUES (NULL, CURRENT_TIMESTAMP,
+//        '', '', '', '', '', '0', '', NULL, '0', '0', '0', NULL, '0', '0', '', '0', '0', '0', '0', '0',
+//        '0', '0', NULL, NULL, '0', '', '0', NULL)                   
+//                        query="insert into main_table (GroupLeader,Address,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+//                                + "GuideCount,GuideNumber,GuideFee,TotalFee) values ('"+lead+"','"+addr+"','"+nation+"',"
+//                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+","+total+")";
+                        query="insert into main_table (GroupLeader,Address,IdNum,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+                                + "GuideCount,GuideNumber,GuideFee,ConopyFee,TotalFee,OtherFee,OtherRemark) values ('"+lead+"','"+addr+"','"+idn+"','"+nation+"',"
+                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+","+cf+","
+                                + ""+total+","+misamt+",'"+remark+"')";
+                        st.executeUpdate(query);
+                        JOptionPane.showMessageDialog(null, "RECORD INSERTED");
+                    }
+                    catch(SQLException e)
+                    {
+                        JOptionPane.showMessageDialog(null, e);
+                    }
+        }
+        else if (ActivityList.getSelectedIndex()==3){
+            activity = String.valueOf(ActivityList.getSelectedItem());
+            String remark=otherremarks.getText();
+            double misamt=Double.parseDouble(miscfee.getText());
+            wf=Integer.parseInt(walkfee.getText());
+            guf=Integer.parseInt(guidefees.getText());
+            bf=Integer.parseInt(boatfees.getText());
+            total=Double.parseDouble(totalamt.getText());
+                        try
+                    {
+//INSERT INTO `main_table` (`TicketNo`, `DateTime`, `GroupLeader`, `Address`,
+//`Nationality`, `MaleCount`, `FemaleCount`, `ChildrenCount`, `Activity`, `GuideCount`, 
+//`Days`, `EntryFee`, `GypsyFee`, `Roomday`, `BoatFee`, `GuideFee`, `GuideNumber`, `Hours`, 
+//`TawaBoatFee`, `WalkFee`, `JoyFee`, `ConopyFee`, `RoomFee`, `RoomCount`, `NoofRoom`, `RoomType`,
+//`GovtFee`, `TotalFee`, `OtherFee`, `OtherRemark`) VALUES (NULL, CURRENT_TIMESTAMP,
+//        '', '', '', '', '', '0', '', NULL, '0', '0', '0', NULL, '0', '0', '', '0', '0', '0', '0', '0',
+//        '0', '0', NULL, NULL, '0', '', '0', NULL)                   
+//                        query="insert into main_table (GroupLeader,Address,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+//                                + "GuideCount,GuideNumber,GuideFee,TotalFee) values ('"+lead+"','"+addr+"','"+nation+"',"
+//                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+","+total+")";
+                        query="insert into main_table (GroupLeader,Address,IdNum,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+                                + "GuideCount,GuideNumber,GuideFee,WalkFee,BoatFee,TotalFee,OtherFee,OtherRemark) values ('"+lead+"','"+addr+"','"+idn+"','"+nation+"',"
+                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+","+wf+","+bf+","
+                                + ""+total+","+misamt+",'"+remark+"')";
+                        st.executeUpdate(query);
+                        JOptionPane.showMessageDialog(null, "RECORD INSERTED");
+                    }
+                    catch(SQLException e)
+                    {
+                        JOptionPane.showMessageDialog(null, e);
+                    }
+        }
+        else if (ActivityList.getSelectedIndex()==4){
+            activity = String.valueOf(ActivityList.getSelectedItem());
+            String remark=otherremarks.getText();
+            double misamt=Double.parseDouble(miscfee.getText());
+            jf=Integer.parseInt(joyfee.getText());
+            bf=Integer.parseInt(boatfees.getText());
+            total=Double.parseDouble(totalamt.getText());
+                        try
+                    {
+//INSERT INTO `main_table` (`TicketNo`, `DateTime`, `GroupLeader`, `Address`,
+//`Nationality`, `MaleCount`, `FemaleCount`, `ChildrenCount`, `Activity`, `GuideCount`, 
+//`Days`, `EntryFee`, `GypsyFee`, `Roomday`, `BoatFee`, `GuideFee`, `GuideNumber`, `Hours`, 
+//`TawaBoatFee`, `WalkFee`, `JoyFee`, `ConopyFee`, `RoomFee`, `RoomCount`, `NoofRoom`, `RoomType`,
+//`GovtFee`, `TotalFee`, `OtherFee`, `OtherRemark`) VALUES (NULL, CURRENT_TIMESTAMP,
+//        '', '', '', '', '', '0', '', NULL, '0', '0', '0', NULL, '0', '0', '', '0', '0', '0', '0', '0',
+//        '0', '0', NULL, NULL, '0', '', '0', NULL)                   
+//                        query="insert into main_table (GroupLeader,Address,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+//                                + "GuideCount,GuideNumber,GuideFee,TotalFee) values ('"+lead+"','"+addr+"','"+nation+"',"
+//                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+","+total+")";
+                        query="insert into main_table (GroupLeader,Address,IdNum,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+                                + "GuideCount,GuideNumber,BoatFee,JoyFee,TotalFee,OtherFee,OtherRemark) values ('"+lead+"','"+addr+"','"+idn+"','"+nation+"',"
+                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+bf+","+jf+","
+                                + ""+total+","+misamt+",'"+remark+"')";
+                        st.executeUpdate(query);
+                        JOptionPane.showMessageDialog(null, "RECORD INSERTED");
+                    }
+                    catch(SQLException e)
+                    {
+                        JOptionPane.showMessageDialog(null, e);
+                    }
+        }
+        else if (ActivityList.getSelectedIndex()==5){
+            activity = String.valueOf(ActivityList.getSelectedItem());
+            String remark=otherremarks.getText();
+            double misamt=Double.parseDouble(miscfee.getText());
+            tbf=Integer.parseInt(tawa.getText());
+            total=Double.parseDouble(totalamt.getText());
+                    try
+                    {
+//INSERT INTO `main_table` (`TicketNo`, `DateTime`, `GroupLeader`, `Address`,
+//`Nationality`, `MaleCount`, `FemaleCount`, `ChildrenCount`, `Activity`, `GuideCount`, 
+//`Days`, `EntryFee`, `GypsyFee`, `Roomday`, `BoatFee`, `GuideFee`, `GuideNumber`, `Hours`, 
+//`TawaBoatFee`, `WalkFee`, `JoyFee`, `ConopyFee`, `RoomFee`, `RoomCount`, `NoofRoom`, `RoomType`,
+//`GovtFee`, `TotalFee`, `OtherFee`, `OtherRemark`) VALUES (NULL, CURRENT_TIMESTAMP,
+//        '', '', '', '', '', '0', '', NULL, '0', '0', '0', NULL, '0', '0', '', '0', '0', '0', '0', '0',
+//        '0', '0', NULL, NULL, '0', '', '0', NULL)                   
+//                        query="insert into main_table (GroupLeader,Address,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+//                                + "GuideCount,GuideNumber,GuideFee,TotalFee) values ('"+lead+"','"+addr+"','"+nation+"',"
+//                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+","+total+")";
+                        query="insert into main_table (GroupLeader,Address,IdNum,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+                                + "TotalFee,TawaBoatFee,OtherFee,OtherRemark) values ('"+lead+"','"+addr+"','"+idn+"','"+nation+"',"
+                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+total+","+tbf+","+misamt+",'"+remark+"')";
+                        st.executeUpdate(query);
+                        JOptionPane.showMessageDialog(null, "RECORD INSERTED");
+                    }
+                    catch(SQLException e)
+                    {
+                        JOptionPane.showMessageDialog(null, e);
+                    }
+        }
+
+        else if (ActivityList.getSelectedIndex()==6){
+            String ga="No";
+            activity = String.valueOf(ActivityList.getSelectedItem());
+            String remark=otherremarks.getText();
+            double misamt=Double.parseDouble(miscfee.getText());
+            if (source.isSelected())
+                ga="Yes";
+                
+            room=Integer.parseInt(roomfee.getText());
+            int rcount=Integer.parseInt(String.valueOf(nroom.getSelectedItem()))+Integer.parseInt(String.valueOf(vroom.getSelectedItem()));
+            String rdetails=roomdetails.getText();
+            int rdays=Integer.parseInt(day.getText());
+            total=Double.parseDouble(totalamt.getText());
+            
+            try
+                    {
+//INSERT INTO `main_table` (`TicketNo`, `DateTime`, `GroupLeader`, `Address`,
+//`Nationality`, `MaleCount`, `FemaleCount`, `ChildrenCount`, `Activity`, `GuideCount`, 
+//`Days`, `EntryFee`, `GypsyFee`, `Roomday`, `BoatFee`, `GuideFee`, `GuideNumber`, `Hours`, 
+//`TawaBoatFee`, `WalkFee`, `JoyFee`, `ConopyFee`, `RoomFee`, `RoomCount`, ``, `RoomType`,
+//`GovtFee`, `TotalFee`, `OtherFee`, `OtherRemark`) VALUES (NULL, CURRENT_TIMESTAMP,
+//        '', '', '', '', '', '0', '', NULL, '0', '0', '0', NULL, '0', '0', '', '0', '0', '0', '0', '0',
+//        '0', '0', NULL, NULL, '0', '', '0', NULL)                   
+//                        query="insert into main_table (GroupLeader,Address,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+//                                + "GuideCount,GuideNumber,GuideFee,TotalFee) values ('"+lead+"','"+addr+"','"+nation+"',"
+//                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+","+total+")";
+                        query="insert into main_table (GroupLeader,Address,IdNum,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+                                + "TotalFee,GA,RoomFee,RoomCount,RoomType,Days,OtherFee,OtherRemark) values ('"+lead+"','"+addr+"','"+idn+"','"+nation+"',"
+                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+total+",'"+ga+"',"+room+","+rcount+",'"+rdetails+"',"+rdays+","+misamt+",'"+remark+"')";
+                        
+                        st.executeUpdate(query);
+                        JOptionPane.showMessageDialog(null, "RECORD INSERTED");
+                    }
+                    catch(SQLException e)
+                    {
+                        JOptionPane.showMessageDialog(null, e);
+                    }
+        }
+        else if (ActivityList.getSelectedIndex()==7){
+            String remark=otherremarks.getText();
+            double misamt=Double.parseDouble(miscfee.getText());
+            total=Double.parseDouble(totalamt.getText());
+            activity = String.valueOf(ActivityList.getSelectedItem());
+             try
+                    {
+//INSERT INTO `main_table` (`TicketNo`, `DateTime`, `GroupLeader`, `Address`,
+//`Nationality`, `MaleCount`, `FemaleCount`, `ChildrenCount`, `Activity`, `GuideCount`, 
+//`Days`, `EntryFee`, `GypsyFee`, `Roomday`, `BoatFee`, `GuideFee`, `GuideNumber`, `Hours`, 
+//`TawaBoatFee`, `WalkFee`, `JoyFee`, `ConopyFee`, `RoomFee`, `RoomCount`, ``, `RoomType`,
+//`GovtFee`, `TotalFee`, `OtherFee`, `OtherRemark`) VALUES (NULL, CURRENT_TIMESTAMP,
+//        '', '', '', '', '', '0', '', NULL, '0', '0', '0', NULL, '0', '0', '', '0', '0', '0', '0', '0',
+//        '0', '0', NULL, NULL, '0', '', '0', NULL)                   ,
+//                        query="insert into main_table (GroupLeader,Address,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+//                                + "GuideCount,GuideNumber,GuideFee,TotalFee) values ('"+lead+"','"+addr+"','"+nation+"',"
+//                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+gc+",'"+gn+"',"+guf+","+total+")";
+                        query="insert into main_table (GroupLeader,Address,IdNum,Nationality,MaleCount,FemaleCount,ChildrenCount,Activity,"
+                                + "TotalFee,OtherFee,OtherRemark) values ('"+lead+"','"+addr+"','"+idn+"','"+nation+"',"
+                                + ""+mc+","+fc+","+cc+",'"+activity+"',"+total+","+misamt+",'"+remark+"')";
+                        
+                        st.executeUpdate(query);
+                        JOptionPane.showMessageDialog(null, "RECORD INSERTED");
+                    }
+                    catch(SQLException e)
+                    {
+                        JOptionPane.showMessageDialog(null, e);
+                    }
+        
+        }
+    }
+    
     void visibility(){
         safari_modes.setVisible(false);
         safari_types.setVisible(false);
         boat_types.setVisible(false);
         jhr.setVisible(false);
         jhrl.setVisible(false);
-        den.setVisible(false);
-        nag.setVisible(false);
-        day.setVisible(false);
-        roomno.setVisible(false);
-        dayl.setVisible(false);
-        rooml.setVisible(false);
-        source.setVisible(false);
+        roompanel.setVisible(false);  
         online.setVisible(false);
-//        onlinepaid.setVisible(false);
-//        chamt.setVisible(false);
+        othertext.setVisible(false);
+        otheramt.setVisible(false);
+
     }    
     void SetActivity(){
         model = (DefaultComboBoxModel) ActivityList.getModel();
@@ -61,14 +396,94 @@ public class MainFrame extends javax.swing.JFrame {
         ActivityList.setModel(model);
     }
     
+    String getSafariname(){
+        if (ladga.isSelected()){
+            return "LADGA";
+        }
+        else if(chutki.isSelected()){
+            return "CHUTKIDEV";
+        }
+        else if(mahal.isSelected()){
+            return "JHINJHINI MAHAL";
+        }
+        else if(choorna.isSelected()){
+            return "CHOORNA";
+        }
+        else{
+            return null;
+        }
+    }
     
-    public MainFrame() {
-        initComponents();
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+    String getBoatName(){
+        if (s6.isSelected()){
+                return "6 Seater";
+        }
+        else if (s8.isSelected()){
+                return "8 Seater";
+        }
+        else if (s10.isSelected()){
+                return "10 Seater";
+        }
+        else{
+                return null;
+        }
+    }
+    void clear(){
+        leader.setText("");
+        address.setText("");
+        idnum.setText("0");
+        mcount.setText("0");
+        fcount.setText("0");
+        ccount.setText("0");
+        Nation.setSelectedIndex(0);
+        gc.setSelectedIndex(-1);
+        g1.setSelectedIndex(0);
+        g2.setSelectedIndex(0);
+        g3.setSelectedIndex(0);
+        g4.setSelectedIndex(0);
+        ActivityList.setSelectedIndex(-1);
+        buttonGroup1.clearSelection();
+        cdayf.setText("0");
+        otheramt.setText("0");
+        othertext.setText("");
+        paidamt.setSelectedIndex(0);
+        online.setSelected(false);
+        gsafari.setSelected(false);
+        buttonGroup2.clearSelection();
+        boathr.setText("0");
+        nroom.setSelectedIndex(0);
+        vroom.setSelectedIndex(0);
+        roomdetails.setText("Room : ");
+        day.setText("0");
+        source.setSelected(false);
+        totalamt.setText("");
+        touristcount.setText("0");
+        guidefees.setText("0");
+        gypsefees.setText("0");
+        guide_count.setText("0");
+        Entryfee.setText("0");
+        walkfee.setText("0");
+        tawa.setText("0");
+        boatfees.setText("0");
+        hrs.setText("0");
+        canofees.setText("0");
+        joyfee.setText("0");
+        roomfee.setText("0");
+        miscfee.setText("0");
+        otherremarks.setText("NA");
+        setComponents();
+        visibility();
+    }
+    
+    void setComponents(){
         st=db.Connection();
         TicketCount.setText(String.valueOf(cal.CountTicket(st)));
         showDate.setText(func.SetDate());
+    }
+    
+    public MainFrame() {
+        initComponents();
+        setComponents();
         visibility();
     }
     /**
@@ -85,7 +500,6 @@ public class MainFrame extends javax.swing.JFrame {
         buttonGroup3 = new javax.swing.ButtonGroup();
         buttonGroup4 = new javax.swing.ButtonGroup();
         buttonGroup5 = new javax.swing.ButtonGroup();
-        FirstFrame = new javax.swing.JPanel();
         Heading = new javax.swing.JLabel();
         SecondFrame = new javax.swing.JPanel();
         TicketCount = new javax.swing.JLabel();
@@ -102,114 +516,109 @@ public class MainFrame extends javax.swing.JFrame {
         mcount = new javax.swing.JTextField();
         fcount = new javax.swing.JTextField();
         ccount = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        showDate = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        gc = new javax.swing.JComboBox();
+        jLabel9 = new javax.swing.JLabel();
+        g1 = new javax.swing.JComboBox();
+        g2 = new javax.swing.JComboBox();
+        g3 = new javax.swing.JComboBox();
+        g4 = new javax.swing.JComboBox();
+        jLabel29 = new javax.swing.JLabel();
+        idnum = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        ThirdFrame = new javax.swing.JPanel();
+        roompanel = new javax.swing.JPanel();
+        day = new javax.swing.JTextField();
+        dayl = new javax.swing.JLabel();
+        source = new javax.swing.JCheckBox();
+        nroom = new javax.swing.JComboBox();
+        vroom = new javax.swing.JComboBox();
+        roomdetails = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         ActivityList = new javax.swing.JComboBox();
-        safari_types = new javax.swing.JPanel();
-        ladga = new javax.swing.JRadioButton();
-        mahal = new javax.swing.JRadioButton();
-        chutki = new javax.swing.JRadioButton();
-        choorna = new javax.swing.JRadioButton();
-        cday = new javax.swing.JLabel();
-        cdayf = new javax.swing.JTextField();
-        jhrl = new javax.swing.JLabel();
-        jhr = new javax.swing.JTextField();
         boat_types = new javax.swing.JPanel();
         s6 = new javax.swing.JRadioButton();
         s8 = new javax.swing.JRadioButton();
         s10 = new javax.swing.JRadioButton();
         hrs = new javax.swing.JLabel();
         boathr = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        showDate = new javax.swing.JLabel();
-        rooml = new javax.swing.JLabel();
-        roomno = new javax.swing.JTextField();
-        day = new javax.swing.JTextField();
-        source = new javax.swing.JCheckBox();
-        den = new javax.swing.JRadioButton();
-        nag = new javax.swing.JRadioButton();
-        dayl = new javax.swing.JLabel();
         safari_modes = new javax.swing.JPanel();
         online = new javax.swing.JRadioButton();
         paidamt = new javax.swing.JComboBox();
-        ThirdFrame = new javax.swing.JPanel();
-        touristcount = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        Entryfee = new javax.swing.JLabel();
-        guide_count = new javax.swing.JLabel();
-        gc = new javax.swing.JComboBox();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        boatfees = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        gypsefees = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        guidefees = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        t_hours = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        canofees = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        joyfee = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
-        walkfee = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
-        tawa = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        roomfee = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        gov = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jComboBox2 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
-        jComboBox4 = new javax.swing.JComboBox();
-        FourthFrame = new javax.swing.JPanel();
+        gsafari = new javax.swing.JCheckBox();
+        off = new javax.swing.JLabel();
+        safari_types = new javax.swing.JPanel();
+        ladga = new javax.swing.JRadioButton();
+        mahal = new javax.swing.JRadioButton();
+        chutki = new javax.swing.JRadioButton();
+        choorna = new javax.swing.JRadioButton();
+        cday = new javax.swing.JLabel();
+        othersafari = new javax.swing.JRadioButton();
+        keriya = new javax.swing.JRadioButton();
+        cdayf = new javax.swing.JTextField();
+        othertext = new javax.swing.JTextField();
+        otheramt = new javax.swing.JTextField();
+        jhrl = new javax.swing.JLabel();
+        jhr = new javax.swing.JTextField();
+        prevticket = new javax.swing.JButton();
+        prevticket1 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         totalamt = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jLabel28 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
+        joyfee = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        canofees = new javax.swing.JLabel();
+        t_hours = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        boatfees = new javax.swing.JLabel();
+        tawa = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        roomfee = new javax.swing.JLabel();
+        walkfee = new javax.swing.JLabel();
+        Entryfee = new javax.swing.JLabel();
+        guide_count = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        guidefees = new javax.swing.JLabel();
+        touristcount = new javax.swing.JLabel();
+        gypsefees = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        miscfee = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        otherremarks = new javax.swing.JTextField();
 
         Heading.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         Heading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Heading.setText("Satpuda Forest Reserve Project");
 
-        javax.swing.GroupLayout FirstFrameLayout = new javax.swing.GroupLayout(FirstFrame);
-        FirstFrame.setLayout(FirstFrameLayout);
-        FirstFrameLayout.setHorizontalGroup(
-            FirstFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FirstFrameLayout.createSequentialGroup()
-                .addContainerGap(503, Short.MAX_VALUE)
-                .addComponent(Heading, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(587, 587, 587))
-        );
-        FirstFrameLayout.setVerticalGroup(
-            FirstFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FirstFrameLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Heading, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        getContentPane().add(FirstFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1820, -1));
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         SecondFrame.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         TicketCount.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        SecondFrame.add(TicketCount, new org.netbeans.lib.awtextra.AbsoluteConstraints(168, 11, 220, 26));
+        SecondFrame.add(TicketCount, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 220, 26));
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel3.setText("Ticket Number :");
-        SecondFrame.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 11, -1, 23));
+        SecondFrame.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, 23));
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel2.setText("Address :");
-        SecondFrame.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 141, 126, 26));
+        SecondFrame.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 80, 126, 26));
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel4.setText("Group Leader :");
@@ -217,94 +626,141 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel5.setText("Nationality :");
-        SecondFrame.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 205, 126, 26));
+        SecondFrame.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 126, 26));
 
         leader.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        SecondFrame.add(leader, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 217, -1));
+        SecondFrame.add(leader, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 150, -1));
 
         address.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        SecondFrame.add(address, new org.netbeans.lib.awtextra.AbsoluteConstraints(172, 140, 217, -1));
+        SecondFrame.add(address, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 80, 110, -1));
 
         Nation.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         Nation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Indian", "Foreigner" }));
-        SecondFrame.add(Nation, new org.netbeans.lib.awtextra.AbsoluteConstraints(172, 204, 217, -1));
+        SecondFrame.add(Nation, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 190, 217, -1));
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel6.setText("Male Count :");
-        SecondFrame.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 80, 119, 32));
+        SecondFrame.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 119, 32));
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel7.setText("Children Count :");
-        SecondFrame.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 200, 178, 29));
+        SecondFrame.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 130, 178, 29));
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel8.setText("Female Count :");
-        SecondFrame.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 140, -1, 26));
+        SecondFrame.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 130, -1, 26));
 
         mcount.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         mcount.setText("0");
-        SecondFrame.add(mcount, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 80, 162, -1));
+        SecondFrame.add(mcount, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 90, -1));
 
         fcount.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         fcount.setText("0");
-        SecondFrame.add(fcount, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 140, 162, -1));
+        SecondFrame.add(fcount, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, 110, -1));
 
         ccount.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         ccount.setText("0");
         ccount.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        SecondFrame.add(ccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 200, 162, -1));
+        SecondFrame.add(ccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 130, 90, -1));
 
-        jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel1.setText("Date :");
+        SecondFrame.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, 62, 26));
+
+        showDate.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        SecondFrame.add(showDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 30, 120, 26));
+
+        jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel13.setText("Guide Count:");
+        SecondFrame.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 190, 110, 20));
+
+        gc.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        gc.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
+        gc.setSelectedIndex(-1);
+        SecondFrame.add(gc, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 190, 100, -1));
+
+        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel9.setText("Guide Number ");
+        SecondFrame.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 110, 30));
+
+        g1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        g1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
+        SecondFrame.add(g1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, 60, 30));
+
+        g2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        g2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
+        SecondFrame.add(g2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 260, 60, 30));
+
+        g3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        g3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
+        SecondFrame.add(g3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 260, 60, 30));
+
+        g4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        g4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
+        SecondFrame.add(g4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 260, 60, 30));
+
+        jLabel29.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel29.setText("ID No.");
+        SecondFrame.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 80, 119, 32));
+
+        idnum.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        idnum.setText("0");
+        SecondFrame.add(idnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 80, 162, -1));
+
+        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jButton1.setText("TOTAL");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        SecondFrame.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 270, 200, 30));
+
+        getContentPane().add(SecondFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 980, 320));
+
+        ThirdFrame.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        roompanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        day.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        day.setText("0");
+        roompanel.add(day, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 150, 70, 20));
+
+        dayl.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        dayl.setText("DAYS");
+        roompanel.add(dayl, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, -1, 20));
+
+        source.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        source.setText("Govt.");
+        roompanel.add(source, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 70, -1));
+
+        nroom.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        nroom.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5" }));
+        roompanel.add(nroom, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 107, -1));
+
+        vroom.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        vroom.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2" }));
+        roompanel.add(vroom, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 110, -1));
+
+        roomdetails.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        roomdetails.setText("Room :");
+        roompanel.add(roomdetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 110, 30));
+
+        ThirdFrame.add(roompanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 70, 140, 210));
+
+        jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel11.setText("Select Activity :");
-        SecondFrame.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 60, 119, 30));
+        ThirdFrame.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 130, 30));
 
-        ActivityList.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        ActivityList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Gypsy_Safari", "Boating", "Cannoing", "Walking", "Joy_Ride", "Tawa_Boat_Fee", "VIP_Room", "Room" }));
+        ActivityList.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        ActivityList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Gypsy_Safari", "Boating", "Cannoing", "Walking", "Joy_Ride", "Tawa_Boat_Fee", "Room", "OTHER" }));
         ActivityList.setSelectedIndex(-1);
         ActivityList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ActivityListActionPerformed(evt);
             }
         });
-        SecondFrame.add(ActivityList, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 60, 218, 23));
-
-        safari_types.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        buttonGroup1.add(ladga);
-        ladga.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        ladga.setText("LAGDA");
-        safari_types.add(ladga, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 0, -1, -1));
-
-        buttonGroup1.add(mahal);
-        mahal.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        mahal.setText("JHINJHINI MAHAL");
-        safari_types.add(mahal, new org.netbeans.lib.awtextra.AbsoluteConstraints(99, 0, -1, -1));
-
-        buttonGroup1.add(chutki);
-        chutki.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        chutki.setText("CHUTKIDEV");
-        safari_types.add(chutki, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 0, -1, -1));
-
-        buttonGroup1.add(choorna);
-        choorna.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        choorna.setText("CHOORNA");
-        safari_types.add(choorna, new org.netbeans.lib.awtextra.AbsoluteConstraints(409, 0, -1, -1));
-
-        cday.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        cday.setText("DAYS :");
-        safari_types.add(cday, new org.netbeans.lib.awtextra.AbsoluteConstraints(524, 4, -1, -1));
-
-        cdayf.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        safari_types.add(cdayf, new org.netbeans.lib.awtextra.AbsoluteConstraints(573, 1, 80, -1));
-
-        jhrl.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jhrl.setText("HOURS :");
-        safari_types.add(jhrl, new org.netbeans.lib.awtextra.AbsoluteConstraints(436, 91, -1, -1));
-
-        jhr.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        safari_types.add(jhr, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, 70, -1));
-
-        SecondFrame.add(safari_types, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 110, 670, 30));
+        ThirdFrame.add(ActivityList, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, 230, 23));
 
         boat_types.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -316,366 +772,474 @@ public class MainFrame extends javax.swing.JFrame {
         buttonGroup2.add(s8);
         s8.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         s8.setText("8 SEATER");
-        boat_types.add(s8, new org.netbeans.lib.awtextra.AbsoluteConstraints(113, 0, -1, -1));
+        boat_types.add(s8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
 
         buttonGroup2.add(s10);
         s10.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         s10.setText("10 SEATER");
-        boat_types.add(s10, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, -1, -1));
+        boat_types.add(s10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
 
         hrs.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         hrs.setText("HOURS :");
-        boat_types.add(hrs, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 4, -1, -1));
+        boat_types.add(hrs, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
 
         boathr.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        boat_types.add(boathr, new org.netbeans.lib.awtextra.AbsoluteConstraints(429, 1, 123, -1));
+        boathr.setText("0");
+        boat_types.add(boathr, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 90, -1));
 
-        SecondFrame.add(boat_types, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 150, 603, -1));
+        ThirdFrame.add(boat_types, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, 180, 150));
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel1.setText("Date :");
-        SecondFrame.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 20, 62, 26));
-
-        showDate.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        SecondFrame.add(showDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 20, 220, 26));
-
-        rooml.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        rooml.setText("ROOM NO. :");
-        SecondFrame.add(rooml, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 190, -1, 22));
-
-        roomno.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        SecondFrame.add(roomno, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 190, 70, -1));
-
-        day.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        SecondFrame.add(day, new org.netbeans.lib.awtextra.AbsoluteConstraints(1470, 190, 70, -1));
-
-        source.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        source.setText("Govt.");
-        SecondFrame.add(source, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 220, 101, -1));
-
-        buttonGroup4.add(den);
-        den.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        den.setText("Denwa");
-        SecondFrame.add(den, new org.netbeans.lib.awtextra.AbsoluteConstraints(1350, 220, -1, -1));
-
-        buttonGroup4.add(nag);
-        nag.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        nag.setText("NagDwari");
-        SecondFrame.add(nag, new org.netbeans.lib.awtextra.AbsoluteConstraints(1460, 220, -1, -1));
-
-        dayl.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        dayl.setText("DAYS");
-        SecondFrame.add(dayl, new org.netbeans.lib.awtextra.AbsoluteConstraints(1420, 190, -1, 22));
-
-        buttonGroup5.add(online);
         online.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         online.setText("Online");
 
         paidamt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4" }));
+
+        gsafari.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        gsafari.setText("GA");
+
+        off.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        off.setText("OFFLINE");
 
         javax.swing.GroupLayout safari_modesLayout = new javax.swing.GroupLayout(safari_modes);
         safari_modes.setLayout(safari_modesLayout);
         safari_modesLayout.setHorizontalGroup(
             safari_modesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(safari_modesLayout.createSequentialGroup()
-                .addGap(0, 10, Short.MAX_VALUE)
-                .addComponent(online)
-                .addGap(45, 45, 45)
-                .addComponent(paidamt, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap()
+                .addGroup(safari_modesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(paidamt, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(gsafari, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(off, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(online))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         safari_modesLayout.setVerticalGroup(
             safari_modesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(safari_modesLayout.createSequentialGroup()
-                .addGroup(safari_modesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(safari_modesLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(paidamt, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2))
-                    .addGroup(safari_modesLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(online)))
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(gsafari)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(online)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(off, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paidamt, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        SecondFrame.add(safari_modes, new org.netbeans.lib.awtextra.AbsoluteConstraints(1510, 50, 260, 50));
+        ThirdFrame.add(safari_modes, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, 150, 140));
 
-        getContentPane().add(SecondFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 1820, 280));
+        buttonGroup1.add(ladga);
+        ladga.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        ladga.setText("LAGDA");
+        ladga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ladgaActionPerformed(evt);
+            }
+        });
 
-        touristcount.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        touristcount.setText("0");
+        buttonGroup1.add(mahal);
+        mahal.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        mahal.setText("JHINJHINI MAHAL");
+        mahal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mahalActionPerformed(evt);
+            }
+        });
 
-        jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel10.setText("Total Tourist :");
+        buttonGroup1.add(chutki);
+        chutki.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        chutki.setText("CHUTKIDEV");
+        chutki.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chutkiActionPerformed(evt);
+            }
+        });
 
-        Entryfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        Entryfee.setText("0");
+        buttonGroup1.add(choorna);
+        choorna.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        choorna.setText("CHOORNA");
+        choorna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                choornaActionPerformed(evt);
+            }
+        });
 
-        guide_count.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        guide_count.setText("0");
+        cday.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        cday.setText("DAYS :");
 
-        gc.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        gc.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
+        buttonGroup1.add(othersafari);
+        othersafari.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        othersafari.setText("Other");
+        othersafari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                othersafariActionPerformed(evt);
+            }
+        });
 
-        jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel13.setText("Guide Count' :");
+        buttonGroup1.add(keriya);
+        keriya.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        keriya.setText("KERIYA");
+        keriya.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keriyaActionPerformed(evt);
+            }
+        });
 
-        jLabel14.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel14.setText("Guide Count :");
+        cdayf.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        cdayf.setText("0");
+        cdayf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cdayfActionPerformed(evt);
+            }
+        });
 
-        jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel15.setText("Entry Fees: ");
+        othertext.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        othertext.setText("NA");
 
-        jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel16.setText("Boat Fees :");
+        otheramt.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        otheramt.setText("0");
 
-        boatfees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        boatfees.setText("0");
-
-        jLabel18.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel18.setText("Gypse Fees :");
-
-        gypsefees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        gypsefees.setText("0");
-
-        jLabel19.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel19.setText("Guide Fees :");
-
-        guidefees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        guidefees.setText("0");
-
-        jLabel17.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel17.setText("Hours :");
-
-        t_hours.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        t_hours.setText("0");
-
-        jLabel20.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel20.setText("Canopy Fees: ");
-
-        canofees.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        canofees.setText("0");
-
-        jLabel21.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel21.setText("Joy Fees: ");
-
-        joyfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        joyfee.setText("0");
-
-        jLabel22.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel22.setText("Walk Fees: ");
-
-        walkfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        walkfee.setText("0");
-
-        jLabel23.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel23.setText("Tawa BoatFees :");
-
-        tawa.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        tawa.setText("0");
-
-        jLabel24.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel24.setText("Room Fees");
-
-        roomfee.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        roomfee.setText("0");
-
-        jLabel25.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel25.setText("Government");
-
-        gov.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        gov.setText("0");
-
-        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel9.setText("Guide Number ");
-
-        jComboBox1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
-
-        jComboBox2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
-
-        jComboBox3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
-
-        jComboBox4.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35" }));
-
-        javax.swing.GroupLayout ThirdFrameLayout = new javax.swing.GroupLayout(ThirdFrame);
-        ThirdFrame.setLayout(ThirdFrameLayout);
-        ThirdFrameLayout.setHorizontalGroup(
-            ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ThirdFrameLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ThirdFrameLayout.createSequentialGroup()
-                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10))
+        javax.swing.GroupLayout safari_typesLayout = new javax.swing.GroupLayout(safari_types);
+        safari_types.setLayout(safari_typesLayout);
+        safari_typesLayout.setHorizontalGroup(
+            safari_typesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(safari_typesLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(safari_typesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chutki)
+                    .addComponent(mahal)
+                    .addComponent(choorna)
+                    .addGroup(safari_typesLayout.createSequentialGroup()
+                        .addComponent(ladga)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(keriya)))
+                .addGap(34, 34, 34))
+            .addGroup(safari_typesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(safari_typesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(othersafari, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(safari_typesLayout.createSequentialGroup()
+                        .addComponent(cday)
                         .addGap(18, 18, 18)
-                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(ThirdFrameLayout.createSequentialGroup()
-                                .addComponent(gypsefees, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(422, 422, 422)
-                                .addComponent(boatfees, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(ThirdFrameLayout.createSequentialGroup()
-                                .addComponent(touristcount, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(gov, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tawa, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(ThirdFrameLayout.createSequentialGroup()
-                                .addGap(190, 190, 190)
-                                .addComponent(joyfee, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ThirdFrameLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(50, 50, 50)
-                                .addComponent(t_hours, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cdayf, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(safari_typesLayout.createSequentialGroup()
+                        .addComponent(othertext, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(roomfee, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(ThirdFrameLayout.createSequentialGroup()
-                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(ThirdFrameLayout.createSequentialGroup()
-                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(50, 50, 50)
-                                .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(130, 130, 130)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(ThirdFrameLayout.createSequentialGroup()
-                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(ThirdFrameLayout.createSequentialGroup()
-                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(guidefees, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(38, 38, 38)
-                                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(ThirdFrameLayout.createSequentialGroup()
-                                        .addGap(144, 144, 144)
-                                        .addComponent(guide_count, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(ThirdFrameLayout.createSequentialGroup()
-                                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(44, 44, 44)
-                                        .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(ThirdFrameLayout.createSequentialGroup()
-                                                .addComponent(walkfee, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(ThirdFrameLayout.createSequentialGroup()
-                                                .addComponent(Entryfee, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel23)))))
-                                .addGap(174, 174, 174)
-                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(50, 50, 50)
-                        .addComponent(canofees, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(otheramt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        ThirdFrameLayout.setVerticalGroup(
-            ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ThirdFrameLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(58, 58, 58)
-                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(guidefees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(guide_count, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(gov, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(t_hours, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(canofees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tawa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Entryfee, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(touristcount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(gypsefees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(walkfee, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(boatfees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(ThirdFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(joyfee, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(roomfee, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(22, 22, 22))
+        safari_typesLayout.setVerticalGroup(
+            safari_typesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(safari_typesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(safari_typesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ladga)
+                    .addComponent(keriya, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
+                .addComponent(mahal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chutki)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(choorna)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(safari_typesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cday, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cdayf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(othersafari, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(safari_typesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(othertext, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(otheramt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(ThirdFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 1820, 300));
+        ThirdFrame.add(safari_types, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 180, -1));
 
-        FourthFrame.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jhrl.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jhrl.setText("HOURS :");
+        ThirdFrame.add(jhrl, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 10, 70, 30));
 
-        jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jhr.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jhr.setText("0");
+        ThirdFrame.add(jhr, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 90, 30));
+
+        prevticket.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        prevticket.setText("VIEW TICKETS");
+        prevticket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevticketActionPerformed(evt);
+            }
+        });
+        ThirdFrame.add(prevticket, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 110, 200, 30));
+
+        prevticket1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        prevticket1.setText("PREV. TICKETS");
+        prevticket1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevticket1ActionPerformed(evt);
+            }
+        });
+        ThirdFrame.add(prevticket1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 160, 200, 30));
+
+        jButton6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jButton6.setText("GET REPORT");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        ThirdFrame.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 210, 200, 30));
+
+        jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel12.setText("TOTAL :");
-        FourthFrame.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, 20));
+        ThirdFrame.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 260, -1, 20));
 
-        totalamt.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        FourthFrame.add(totalamt, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, 123, 20));
+        totalamt.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        ThirdFrame.add(totalamt, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 250, 120, 40));
 
-        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton2.setText("SAVE");
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jButton2.setText("SAVE AND PRINT");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        FourthFrame.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 20, 171, 30));
+        ThirdFrame.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 10, 200, 30));
 
-        jButton1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton1.setText("CALCULATE");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jButton3.setText("CLEAR");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton3ActionPerformed(evt);
             }
         });
-        FourthFrame.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, 177, 30));
+        ThirdFrame.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 60, 200, 30));
 
-        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jButton3.setText("CLEAR");
-        FourthFrame.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 20, 160, 30));
+        getContentPane().add(ThirdFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 990, 300));
 
-        getContentPane().add(FourthFrame, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 710, 1820, 60));
+        jLabel28.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel28.setText("SATPUDA TIGER RESERVE, HOSHANGABAD (CORE ZONE MADHAI)");
+        getContentPane().add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 1240, 70));
+
+        jLabel21.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel21.setText("Joy Fees: ");
+
+        joyfee.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        joyfee.setText("0");
+
+        jLabel20.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel20.setText("Canopy Fees: ");
+
+        canofees.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        canofees.setText("0");
+
+        t_hours.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        t_hours.setText("0");
+
+        jLabel17.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel17.setText("Hours :");
+
+        jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel16.setText("Boat Fees :");
+
+        boatfees.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        boatfees.setText("0");
+
+        tawa.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        tawa.setText("0");
+
+        jLabel23.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel23.setText("Tawa BoatFees :");
+
+        jLabel24.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel24.setText("Room Fees");
+
+        jLabel22.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel22.setText("Walk Fees: ");
+
+        jLabel14.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel14.setText("Guide Count :");
+
+        jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel15.setText("Entry Fees: ");
+
+        roomfee.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        roomfee.setText("0");
+
+        walkfee.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        walkfee.setText("0");
+
+        Entryfee.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        Entryfee.setText("0");
+
+        guide_count.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        guide_count.setText("0");
+
+        jLabel18.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel18.setText("Gypse Fees :");
+
+        jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel10.setText("Total Tourist :");
+
+        jLabel19.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel19.setText("Guide Fees :");
+
+        guidefees.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        guidefees.setText("0");
+
+        touristcount.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        touristcount.setText("0");
+
+        gypsefees.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        gypsefees.setText("0");
+
+        jLabel26.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel26.setText("Other Amt.");
+
+        miscfee.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        miscfee.setText("0");
+
+        jLabel27.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel27.setText("Remarks");
+
+        otherremarks.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        otherremarks.setText("NA");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(touristcount, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)
+                                .addComponent(guidefees, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)
+                                .addComponent(gypsefees, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(guide_count, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(Entryfee, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(60, 60, 60)
+                                .addComponent(walkfee, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tawa, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(37, 37, 37)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(canofees, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(boatfees, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(t_hours, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(joyfee, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(roomfee, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(51, 51, 51)
+                                    .addComponent(miscfee, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(otherremarks, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(touristcount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(guidefees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(gypsefees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(guide_count, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Entryfee, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(walkfee, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tawa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boatfees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(t_hours, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(canofees, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(joyfee, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(roomfee, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel26)
+                    .addComponent(miscfee, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel27)
+                    .addComponent(otherremarks, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(71, 71, 71))
+        );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 70, 270, 670));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+String gova="No";
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         int male,female,child,Vtotal,Cal_total;
@@ -685,10 +1249,11 @@ public class MainFrame extends javax.swing.JFrame {
         Cal_total=male+female;
         Vtotal=male+female+child;
         
-        int guide=0,boat=0,Entryfees=0,gypsy=0;
-        double hr=0,amt=0,tamt=0;
-        
+        int guide=0,boat=0,Entryfees=0,gypsy=0,amt=0,tamt=0;;
+        double hr=0;
+
         if (ladga.isSelected()==true){
+            
             if (online.isSelected()==true){
                 if(Cal_total>6){
                     JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
@@ -698,10 +1263,13 @@ public class MainFrame extends javax.swing.JFrame {
                     gypsy=2700;
                     boat=50*Cal_total;
                     guide=480;
+                    int mis=Integer.parseInt(miscfee.getText());
+                    guide_count.setText(String.valueOf(gc.getSelectedItem()));
                     boatfees.setText(String.valueOf(boat));
                     gypsefees.setText(String.valueOf(gypsy));
                     Entryfee.setText(String.valueOf(Entryfees));
-                    totalamt.setText(String.valueOf(cal.Ladga_Online(Cal_total)));
+                    totalamt.setText(String.valueOf(cal.Ladga_Online(Cal_total)+mis));
+                    
                 }
             }
             else{
@@ -709,56 +1277,172 @@ public class MainFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
                 }
                 else{
-                    Entryfees=1500;
+                    if (gsafari.isSelected()){
+                        gova="Yes";
+                        Entryfees=0;
+                    }
+                    else
+                        Entryfees=1500;
                     gypsy=2700;
                     boat=50*Cal_total;
                     guide=480;
+                    int mis=Integer.parseInt(miscfee.getText());
+                    guide_count.setText(String.valueOf(gc.getSelectedItem()));
                     boatfees.setText(String.valueOf(boat));
                     gypsefees.setText(String.valueOf(gypsy));
                     Entryfee.setText(String.valueOf(Entryfees));
-                    totalamt.setText(String.valueOf(cal.Ladga(Cal_total)));
+                    totalamt.setText(String.valueOf(cal.Ladga(Cal_total,Entryfees)+mis));
+                    
                 }
             }
         }
-        else if (mahal.isSelected()==true){
+        else if (keriya.isSelected()==true){
+            
+            if (online.isSelected()==true){
                 if(Cal_total>6){
                     JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
                 }
                 else{
-                    Entryfees=1500;
+                    Entryfees=0;
+                    gypsy=2000;
+                    boat=50*Cal_total;
+                    guide=480;
+                    int mis=Integer.parseInt(miscfee.getText());
+                    guide_count.setText(String.valueOf(gc.getSelectedItem()));
+                    boatfees.setText(String.valueOf(boat));
+                    gypsefees.setText(String.valueOf(gypsy));
+                    Entryfee.setText(String.valueOf(Entryfees));
+                    totalamt.setText(String.valueOf(cal.Keriya_Online(Cal_total)+mis));
+                    
+                }
+            }
+            else{
+                if(Cal_total>6){
+                    JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
+                }
+                else{
+                    if (gsafari.isSelected()){
+                        gova="Yes";
+                        Entryfees=0;
+                    }
+                    else
+                        Entryfees=1500;
+                    gypsy=2000;
+                    boat=50*Cal_total;
+                    guide=480;
+                    int mis=Integer.parseInt(miscfee.getText());
+                    guide_count.setText(String.valueOf(gc.getSelectedItem()));
+                    boatfees.setText(String.valueOf(boat));
+                    gypsefees.setText(String.valueOf(gypsy));
+                    Entryfee.setText(String.valueOf(Entryfees));
+                    totalamt.setText(String.valueOf(cal.Keriya(Cal_total,Entryfees)+mis));
+                    
+                }
+            }
+        }
+        else if (othersafari.isSelected()){
+            gypsefees.setText(String.valueOf(otheramt.getText()));
+            totalamt.setText(String.valueOf(otheramt.getText()));
+        }
+        else if (mahal.isSelected()==true){
+            
+            if (online.isSelected()==true){
+                if(Cal_total>6){
+                    JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
+                }
+                else{
+                    Entryfees=0;
                     gypsy=3300;
                     boat=50*Cal_total;
                     guide=480;
+                    int mis=Integer.parseInt(miscfee.getText());
+                    guide_count.setText(String.valueOf(gc.getSelectedItem()));
                     boatfees.setText(String.valueOf(boat));
                     gypsefees.setText(String.valueOf(gypsy));
                     Entryfee.setText(String.valueOf(Entryfees));
-                    totalamt.setText(String.valueOf(cal.Mahal(Cal_total)));
+                    totalamt.setText(String.valueOf(cal.Mahal_Online(Cal_total)+mis));
+                    
                 }
-        }
-        
-        else if (chutki.isSelected()==true){
+            }
+            else{
                 if(Cal_total>6){
                     JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
                 }
                 else{
-                    Entryfees=1500;
-                    gypsy=4000;
+                    if (gsafari.isSelected()){
+                        gova="Yes";
+                        Entryfees=0;
+                    }
+                    else
+                        Entryfees=1500;
+                    gypsy=3300;
                     boat=50*Cal_total;
                     guide=480;
+                    int mis=Integer.parseInt(miscfee.getText());
+                    guide_count.setText(String.valueOf(gc.getSelectedItem()));
                     boatfees.setText(String.valueOf(boat));
                     gypsefees.setText(String.valueOf(gypsy));
                     Entryfee.setText(String.valueOf(Entryfees));
-                    totalamt.setText(String.valueOf(cal.Dev(Cal_total)));
+                    totalamt.setText(String.valueOf(cal.Mahal(Cal_total,Entryfees)+mis));
+                    
                 }
+            }
+        }
+        
+        else if (chutki.isSelected()==true){
+            
+            if (online.isSelected()==true){
+                if(Cal_total>6){
+                    JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
+                }
+                else{
+                    Entryfees=0;
+                    gypsy=4000;
+                    boat=50*Cal_total;
+                    guide=480;
+                    int mis=Integer.parseInt(miscfee.getText());
+                    guide_count.setText(String.valueOf(gc.getSelectedItem()));
+                    boatfees.setText(String.valueOf(boat));
+                    gypsefees.setText(String.valueOf(gypsy));
+                    Entryfee.setText(String.valueOf(Entryfees));
+                    totalamt.setText(String.valueOf(cal.Dev_online(Cal_total)+mis));
+                    
+                }
+            }
+            else{
+                if(Cal_total>6){
+                    JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
+                }
+                else{
+                    if (gsafari.isSelected()){
+                        gova="Yes";
+                        Entryfees=0;
+                    }
+                    else
+                        Entryfees=1500;
+                    int mis=Integer.parseInt(miscfee.getText());
+                    gypsy=4000;
+                    boat=50*Cal_total;
+                    guide=480;
+                    guide_count.setText(String.valueOf(gc.getSelectedItem()));
+                    boatfees.setText(String.valueOf(boat));
+                    gypsefees.setText(String.valueOf(gypsy));
+                    Entryfee.setText(String.valueOf(Entryfees));
+                    totalamt.setText(String.valueOf(cal.Dev(Cal_total,Entryfees)+mis));
+                    
+                }
+            }
         }
 //        Doubtfull work 
         else if (choorna.isSelected()==true){
             double d=0;
+            
             if(Cal_total>6){
                     JOptionPane.showMessageDialog(null,"Maximum 6 Allowed in a Ticket");
             }
             else{
                     int paid;
+                    int mis=Integer.parseInt(miscfee.getText());
                     Entryfees=1500*Integer.parseInt(String.valueOf(paidamt.getSelectedItem()));
                     gypsy=5500;
                     boat=50*Cal_total;
@@ -770,102 +1454,127 @@ public class MainFrame extends javax.swing.JFrame {
                         gypsy*=d;
                         guide*=d;;
                     }
+                    guide_count.setText(String.valueOf(gc.getSelectedItem()));
                     gypsefees.setText(String.valueOf(gypsy));
                     Entryfee.setText(String.valueOf(Entryfees));
-                    totalamt.setText(String.valueOf(gypsy+Entryfees+boat+guide));
+                    totalamt.setText(String.valueOf(gypsy+Entryfees+boat+guide+mis));
+                    
                 }
             }
         
 // Chooorna 
         else if (s6.isSelected()==true){
+            int mis=Integer.parseInt(miscfee.getText());
             boat=1200;
             guide=480;
             hr=Double.parseDouble(boathr.getText());
             amt=cal.Six_Boat(hr);
             tamt+=guide+amt;
+            guide_count.setText(String.valueOf(gc.getSelectedItem()));
             t_hours.setText(String.valueOf(hr));
             boatfees.setText(String.valueOf(amt));
-            totalamt.setText(String.valueOf(tamt));
+            totalamt.setText(String.valueOf(tamt+mis));
+           
         }
         else if (s8.isSelected()==true){
+            int mis=Integer.parseInt(miscfee.getText());
             boat=1350;
             guide=480;
             hr=Double.parseDouble(boathr.getText());
             amt=cal.Eight_boat(hr);
             tamt+=guide+amt;
+            guide_count.setText(String.valueOf(gc.getSelectedItem()));
             t_hours.setText(String.valueOf(hr));
             boatfees.setText(String.valueOf(amt));
-            totalamt.setText(String.valueOf(tamt));
+            totalamt.setText(String.valueOf(tamt+mis));
+           
         }
         else if (s10.isSelected()==true){
             boat=1500;
+            int mis=Integer.parseInt(miscfee.getText());
             guide=480;
             hr=Double.parseDouble(boathr.getText());
             amt=cal.Ten_boat(hr);
             tamt+=guide+amt;
+            guide_count.setText(String.valueOf(gc.getSelectedItem()));
             t_hours.setText(String.valueOf(hr));
             boatfees.setText(String.valueOf(amt));
-            totalamt.setText(String.valueOf(tamt));
+            totalamt.setText(String.valueOf(tamt+mis));
+           
         }
         else if (ActivityList.getSelectedIndex()==2){
             Entryfees=900;
+            int mis=Integer.parseInt(miscfee.getText());
             guide=600*Integer.parseInt(String.valueOf(gc.getSelectedItem()));
             amt=cal.Cannoning(Cal_total);
             tamt+=guide+amt;
+            guide_count.setText(String.valueOf(gc.getSelectedItem()));
             canofees.setText(String.valueOf(amt));
-            totalamt.setText(String.valueOf(tamt));
+            totalamt.setText(String.valueOf(tamt+mis));
+            
         }
         else if (ActivityList.getSelectedIndex()==3){
             Entryfees=250;
+            int mis=Integer.parseInt(miscfee.getText());
             guide=700*Integer.parseInt(String.valueOf(gc.getSelectedItem()));
             boat=150;
             amt=cal.Walking(Cal_total);
             boat*=Cal_total;
             tamt+=guide+amt+boat;
+            guide_count.setText(String.valueOf(gc.getSelectedItem()));
             boatfees.setText(String.valueOf(boat));
             walkfee.setText(String.valueOf(amt));
-            totalamt.setText(String.valueOf(tamt));
+            totalamt.setText(String.valueOf(tamt+mis));
+            
         }
         else if (ActivityList.getSelectedIndex()==4){
+            int mis=Integer.parseInt(miscfee.getText());
             Entryfees=1000;
             boat=150*Cal_total;
             hr=Double.parseDouble(jhr.getText());
-            amt=cal.JoyRide(Cal_total,hr);
+            amt=(int) cal.JoyRide(Cal_total,hr);
             tamt=amt+boat;
             boatfees.setText(String.valueOf(boat));
             joyfee.setText(String.valueOf(amt));
             t_hours.setText(String.valueOf(hr));
-            totalamt.setText(String.valueOf(tamt));
+            totalamt.setText(String.valueOf(tamt+mis));
+            
         }
         else if (ActivityList.getSelectedIndex()==5){
+            int mis=Integer.parseInt(miscfee.getText());
             int tawa_trip=1100;
             tawa.setText(String.valueOf(tawa_trip));
-            totalamt.setText(String.valueOf(tawa_trip));
+            totalamt.setText(String.valueOf(tawa_trip+mis));
+            
         }
         else if (ActivityList.getSelectedIndex()==6){
-            int roombase=3000,g=600;
+            int mis=Integer.parseInt(miscfee.getText());
+            int gn=400,gv=600;
+            int cn=0,cv=0;
+            int n=2000,v=3000;
             int days=Integer.parseInt(day.getText());
-            if (source.isSelected()==true){
-                gov.setText(String.valueOf(g*days));
-                totalamt.setText(String.valueOf(g*days));
+            int rate,total=0;
+            cn=Integer.parseInt(String.valueOf(nroom.getSelectedItem()));
+            cv=Integer.parseInt(String.valueOf(vroom.getSelectedItem()));
+            if (source.isSelected()){
+                total=cn*gn*days;
+                total+=cv*gv*days;
+                roomfee.setText(String.valueOf(total));
+                totalamt.setText(String.valueOf(total+mis));
+                
             }
             else{
-                roomfee.setText(String.valueOf(roombase*days));
-                totalamt.setText(String.valueOf(roombase*days));
+                total=cn*n*days;
+                total+=cv*v*days;
+                roomfee.setText(String.valueOf(total));
+                totalamt.setText(String.valueOf(total+mis));
             }
             
         }
         else if (ActivityList.getSelectedIndex()==7){
-            int roombase=2000,g=400;
-            int days=Integer.parseInt(day.getText());
-            if (source.isSelected()==true){
-                gov.setText(String.valueOf(g*days));
-                totalamt.setText(String.valueOf((g)*days));
-            }
-            else{
-                roomfee.setText(String.valueOf(roombase*days));
-                totalamt.setText(String.valueOf((roombase)*days));
-            }
+            int mis=Integer.parseInt(miscfee.getText());
+            totalamt.setText(String.valueOf(mis));
+            
         }
         touristcount.setText(String.valueOf(Vtotal));     
         guidefees.setText(String.valueOf(guide));
@@ -906,59 +1615,110 @@ public class MainFrame extends javax.swing.JFrame {
             jhrl.setVisible(true);
         }
         else if (ActivityList.getSelectedIndex()==6){
-            den.setVisible(true);
-            nag.setVisible(true);
-            day.setVisible(true);
-            dayl.setVisible(true);
-            source.setVisible(true);
-        }
-        else if (ActivityList.getSelectedIndex()==7){
-            day.setVisible(true);
-            roomno.setVisible(true);
-            dayl.setVisible(true);
-            rooml.setVisible(true);
-            source.setVisible(true);
+            roompanel.setVisible(true);
         }
         else{
             visibility();
         }
     }//GEN-LAST:event_ActivityListActionPerformed
 
+    private void choornaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choornaActionPerformed
+        // TODO add your handling code here:
+        online.setVisible(false);
+        paidamt.setVisible(true);
+        off.setVisible(true);
+        gsafari.setVisible(false);
+    }//GEN-LAST:event_choornaActionPerformed
+
+    private void ladgaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ladgaActionPerformed
+        // TODO add your handling code here:
+        online.setVisible(true);
+        paidamt.setVisible(false);
+        off.setVisible(false);
+        gsafari.setVisible(true);
+    }//GEN-LAST:event_ladgaActionPerformed
+
+    private void mahalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mahalActionPerformed
+        // TODO add your handling code here:
+        online.setVisible(true);
+        paidamt.setVisible(false);
+        off.setVisible(false);
+        gsafari.setVisible(true);
+    }//GEN-LAST:event_mahalActionPerformed
+
+    private void chutkiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chutkiActionPerformed
+        // TODO add your handling code here:
+        online.setVisible(true);
+        paidamt.setVisible(false);
+        off.setVisible(false);
+        gsafari.setVisible(true);
+    }//GEN-LAST:event_chutkiActionPerformed
+
+    private void othersafariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_othersafariActionPerformed
+        // TODO add your handling code here:
+        othertext.setVisible(true);
+        otheramt.setVisible(true);
+    }//GEN-LAST:event_othersafariActionPerformed
+
+    private void prevticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevticketActionPerformed
+        // TODO add your handling code here:
+               this.dispose();
+               Connection pconn;
+       print_connection p = new print_connection();
+       pconn=print_connection.Connection();
+        
+        try{
+          //InputStream inp = new FileInputStream(new File("G:\\COLLEGE\\java\\MyProject\\src\\myproject\\Bill_1.jrxml"));
+          InputStream inp = new FileInputStream(new File("F:\\Madhai Software\\reports\\MadhaiTicket.jrxml"));
+            JasperDesign jd =JRXmlLoader.load(inp);
+            String sql ="select * from main_table";
+            JRDesignQuery newQuery = new JRDesignQuery();
+            newQuery.setText(sql);
+            jd.setQuery(newQuery);
+            JasperReport jr =JasperCompileManager.compileReport(jd);
+            HashMap para = new HashMap();
+            JasperPrint j = JasperFillManager.fillReport(jr,para,pconn);
+            JasperViewer.viewReport(j,false);
+            OutputStream os = new FileOutputStream(new File("F:\\Madhai Software\\reports\\abc.jrxml"));
+            JasperExportManager.exportReportToPdfStream(j,os);
+           }
+        
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_prevticketActionPerformed
+
+    private void keriyaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keriyaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_keriyaActionPerformed
+
+    private void cdayfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cdayfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cdayfActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        new ReportFrame().setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void prevticket1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevticket1ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+                new PrevFrame().setVisible(true);
+    }//GEN-LAST:event_prevticket1ActionPerformed
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/DD");  
-        LocalDateTime now = LocalDateTime.now(); 
-        DateTimeFormatter dtfn = DateTimeFormatter.ofPattern("HH:mm:ss");  
-        LocalDateTime nown = LocalDateTime.now(); 
-        st=Link.Connection();
-        String Query;
-        int tno,mc,fc,cc,gc,ef,gf,bf,gif;
-        String date,time,lead,addr,nation,activity;
-        double hr;
-        tno=Integer.parseInt(TicketCount.getText());
-//        date online
-        date=dtf.format(now);
-//        time online
-        time=dtfn.format(nown);
-        lead=leader.getText();
-        addr=address.getText();
-        nation=String.valueOf(Nation.getSelectedItem());
-        mc=Integer.parseInt(mcount.getText());
-        fc=Integer.parseInt(mcount.getText());
-        cc=Integer.parseInt(ccount.getText());
-        activity=String.valueOf(ActivityList.getSelectedItem());
-//        Guide count or guide related
-        gc=Integer.parseInt(guide_count.getText());
-        ef=Integer.parseInt(Entryfee.getText());
-        gf=Integer.parseInt(gypsefees.getText());
-        bf=Integer.parseInt(boatfees.getText());
-        gif=Integer.parseInt(guide_count.getText());
-        hr=Double.parseDouble(t_hours.getText());
-//        Query
-
-        
-        
+        savedata();
+        printmain();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -995,8 +1755,6 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox ActivityList;
     private javax.swing.JLabel Entryfee;
-    private javax.swing.JPanel FirstFrame;
-    private javax.swing.JPanel FourthFrame;
     private javax.swing.JLabel Heading;
     private javax.swing.JComboBox Nation;
     private javax.swing.JPanel SecondFrame;
@@ -1019,21 +1777,22 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton chutki;
     private javax.swing.JTextField day;
     private javax.swing.JLabel dayl;
-    private javax.swing.JRadioButton den;
     private javax.swing.JTextField fcount;
+    private javax.swing.JComboBox g1;
+    private javax.swing.JComboBox g2;
+    private javax.swing.JComboBox g3;
+    private javax.swing.JComboBox g4;
     private javax.swing.JComboBox gc;
-    private javax.swing.JLabel gov;
+    private javax.swing.JCheckBox gsafari;
     private javax.swing.JLabel guide_count;
     private javax.swing.JLabel guidefees;
     private javax.swing.JLabel gypsefees;
     private javax.swing.JLabel hrs;
+    private javax.swing.JTextField idnum;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1051,7 +1810,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1059,19 +1821,29 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jhr;
     private javax.swing.JLabel jhrl;
     private javax.swing.JLabel joyfee;
+    private javax.swing.JRadioButton keriya;
     private javax.swing.JRadioButton ladga;
     private javax.swing.JTextField leader;
     private javax.swing.JRadioButton mahal;
     private javax.swing.JTextField mcount;
-    private javax.swing.JRadioButton nag;
+    private javax.swing.JTextField miscfee;
+    private javax.swing.JComboBox nroom;
+    private javax.swing.JLabel off;
     private javax.swing.JRadioButton online;
+    private javax.swing.JTextField otheramt;
+    private javax.swing.JTextField otherremarks;
+    private javax.swing.JRadioButton othersafari;
+    private javax.swing.JTextField othertext;
     private javax.swing.JComboBox paidamt;
+    private javax.swing.JButton prevticket;
+    private javax.swing.JButton prevticket1;
+    private javax.swing.JTextField roomdetails;
     private javax.swing.JLabel roomfee;
-    private javax.swing.JLabel rooml;
-    private javax.swing.JTextField roomno;
+    private javax.swing.JPanel roompanel;
     private javax.swing.JRadioButton s10;
     private javax.swing.JRadioButton s6;
     private javax.swing.JRadioButton s8;
@@ -1083,6 +1855,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel tawa;
     private javax.swing.JLabel totalamt;
     private javax.swing.JLabel touristcount;
+    private javax.swing.JComboBox vroom;
     private javax.swing.JLabel walkfee;
     // End of variables declaration//GEN-END:variables
+
 }

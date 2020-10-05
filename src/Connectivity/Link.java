@@ -18,10 +18,10 @@ public class Link {
         public static Statement Connection()
         {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con=(Connection)DriverManager.getConnection("jdbc:mysql://localhost:3308/ticket_management","root","");
+            Class.forName("com.mysql.jdbc.Driver");
+            con=(Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/madaiticketmanagement","root","5cIliY7ZpvwDMffs");
             st=con.createStatement();
-            JOptionPane.showMessageDialog(null, "Connection success...");
+//            JOptionPane.showMessageDialog(null, "Connection success...");
             }
         catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);

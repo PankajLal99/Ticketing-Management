@@ -1,0 +1,1 @@
+START C:\wamp64\wampmanager

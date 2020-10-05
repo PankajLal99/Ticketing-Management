@@ -25,16 +25,17 @@ public class Functions {
 //        System.out.println(dtf.format(now));
         return(dtf.format(now));
     }
-    public List<String> GetArea(Statement st){
+    
+    public List<String> GetActivity(Statement st){
         List<String> l = new ArrayList<>();
         String query;
-        query ="select Area from area_table";
+        query ="select Activity from activity_table";
         ResultSet rs;
         try{
             rs=st.executeQuery(query);
             while(rs.next()){
-//                System.out.println(rs.getString("Area"));
-                l.add(rs.getString("Area"));
+                //System.out.println(rs.getString("Area"));
+                l.add(rs.getString("Activity"));
             }
         }
         catch (SQLException e){
@@ -42,4 +43,5 @@ public class Functions {
         }
         return l;
     }
+    
 }
